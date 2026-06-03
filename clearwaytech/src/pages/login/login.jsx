@@ -4,9 +4,9 @@ import './Login.css'
 
 export default function Login() {
   const { login } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -24,7 +24,7 @@ export default function Login() {
     setPassword('')
   }
     
-  return (
+  return(
     <div className='login-container'>
       <div className='login-card'>
         <div className='login-header'>

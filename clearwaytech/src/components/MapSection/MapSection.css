@@ -12,6 +12,20 @@
   position: relative;
 }
 
+.map-section-container.tecnico .map-wrapper,
+.map-section-container.supporto .map-wrapper {
+  height: 520px;
+  min-height: 520px;
+}
+
+@media (max-width: 900px) {
+  .map-section-container.tecnico .map-wrapper,
+  .map-section-container.supporto .map-wrapper {
+    height: 420px;
+    min-height: 420px;
+  }
+}
+
 .map-iframe {
   width: 100%;
   height: 100%;

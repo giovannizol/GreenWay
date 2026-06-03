@@ -53,8 +53,9 @@ export function AuthProvider({ children }) {
       return { success: false, message: 'Password errata.' }
     }
 
-    setUser(currentUser)
-    return { success: true, user: currentUser }
+    const normalizedUser = { ...currentUser, role: currentUser.role.toString().trim().toLowerCase() }
+    setUser(normalizedUser)
+    return { success: true, user: normalizedUser }
   }
 
   const logout = () => {

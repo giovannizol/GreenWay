@@ -35,6 +35,18 @@
   min-height: 0;
 }
 
+.map-section-container.tecnico,
+.map-section-container.supporto {
+  min-height: 560px;
+}
+
+@media (max-width: 900px) {
+  .map-section-container.tecnico,
+  .map-section-container.supporto {
+    min-height: 420px;
+  }
+}
+
 .dashboard-sidebar-area {
   width: 100%;
   min-height: 0;
