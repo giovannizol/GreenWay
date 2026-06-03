@@ -60,7 +60,16 @@
   position: relative;
 }
 
-.icon-button:hover {
+.logout-button {
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+}
+
+.icon-button:hover,
+.logout-button:hover {
   background: #f1f5f9;
 }
 

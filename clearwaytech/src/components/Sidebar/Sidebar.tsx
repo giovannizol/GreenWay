@@ -1,19 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { useAuth } from '../../context/useAuth'
 import "./Sidebar.css"
 
-const menuItems = [
-  "Dashboard",
-  "Monitoraggio e Analisi",
-  "Manutenzioni",
-  "Gestione Flotta e Stazioni",
-  "Amministrazione",
-  "Calendario",
-  "Gestione Ticket",
-]
-
 export function Sidebar() {
+  const { menuItems } = useAuth()
   const [activeItem, setActiveItem] = useState("Dashboard")
 
   return (
