@@ -3,11 +3,7 @@ import { Sidebar } from '../components/Sidebar/Sidebar'
 import { Header } from '../components/Header/Header'
 import './MainLayout.css'
 
-interface MainLayoutProps {
-  children: React.ReactNode
-}
-
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout({ children }) {
   return (
     <div className="main-layout">
       <Sidebar />
