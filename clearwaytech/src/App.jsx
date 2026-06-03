@@ -1,10 +1,12 @@
-import { MainLayout } from "./layouts/MainLayout/MainLayout"
+import Login from './pages/Login/Login';
+import './App.css';
 
 function App() {
   return (
-    <MainLayout>
-    </MainLayout>
-  )
+    <>
+      <Login />
+    </>
+  );
 }
 
-export default App
+export default App;
