@@ -1,17 +1,9 @@
 "use client"
 
+import React from 'react'
 import "./StatCard.css"
 
-interface StatCardProps {
-  title: string
-  value: string
-  change: string
-  changeType: 'positive' | 'negative'
-  progress: number
-  color: string
-}
-
-export function StatCard({ title, value, change, changeType, progress, color }: StatCardProps) {
+export function StatCard({ title, value, change, changeType, progress, color }) {
   return (
     <div className="stat-card">
       <div className="stat-info">

@@ -1,3 +1,6 @@
+"use client"
+
+import React from 'react'
 import './Dashboard.css'
 import { StatCard } from '../../components/StatCard/StatCard'
 import { MapSection } from '../../components/MapSection/MapSection'
@@ -7,10 +10,10 @@ import { AssistanceChart } from '../../components/AssistanceChart/AssistanceChar
 
 export default function Dashboard() {
   const stats = [
-    { title: "Stazioni attive", value: "245", change: "-8%", changeType: "negative" as const, progress: 75, color: "#14b8a6" },
-    { title: "Flotta immobilizzata", value: "177", change: "+2%", changeType: "positive" as const, progress: 60, color: "#3b82f6" },
-    { title: "Clienti Attivi", value: "55", change: "-20%", changeType: "negative" as const, progress: 45, color: "#f97316" },
-    { title: "Risparmio CO2", value: "148", change: "+22%", changeType: "positive" as const, progress: 80, color: "#22c55e" },
+    { title: "Stazioni attive", value: "245", change: "-8%", changeType: "negative", progress: 75, color: "#14b8a6" },
+    { title: "Flotta immobilizzata", value: "177", change: "+2%", changeType: "positive", progress: 60, color: "#3b82f6" },
+    { title: "Clienti Attivi", value: "55", change: "-20%", changeType: "negative", progress: 45, color: "#f97316" },
+    { title: "Risparmio CO2", value: "148", change: "+22%", changeType: "positive", progress: 80, color: "#22c55e" },
   ]
 
   return (

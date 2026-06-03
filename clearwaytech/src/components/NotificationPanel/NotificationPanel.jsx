@@ -1,5 +1,3 @@
-"use client"
-
 import "./NotificationPanel.css"
 
 export function NotificationPanel() {
