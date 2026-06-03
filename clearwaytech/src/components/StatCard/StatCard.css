@@ -1,0 +1,106 @@
+.stat-card {
+  background: var(--color-card-background);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.stat-title {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-value-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  letter-spacing: -0.8px;
+}
+
+.stat-change {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+}
+
+.stat-change.positive {
+  color: #16a34a;
+  background-color: #dcfce7;
+}
+
+.stat-change.negative {
+  color: #dc2626;
+  background-color: #fee2e2;
+}
+
+.stat-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  z-index: 1;
+}
+
+.stat-progress-bar {
+  height: 8px;
+  background-color: var(--color-background);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.stat-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+.stat-progress-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Subtle background accent */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-primary);
+  opacity: 0.03;
+  border-radius: 50%;
+}

@@ -1,61 +1,73 @@
 .sidebar {
-  width: 200px;
-  background-color: #1a472a;
+  width: var(--sidebar-width);
+  background-color: var(--color-primary);
   color: white;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   min-height: 100vh;
+  box-shadow: var(--shadow-md);
+  z-index: 150;
 }
 
 .sidebar-header {
-  padding: 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-lg);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .sidebar-logo {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .sidebar-label {
-  padding: 20px 20px 10px;
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-sm);
   font-size: 11px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  font-weight: 600;
-  letter-spacing: 1px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 700;
+  letter-spacing: 1.5px;
 }
 
 .sidebar-nav {
-  padding: 0 12px;
+  padding: 0 var(--spacing-md);
   flex: 1;
 }
 
 .nav-item {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  padding: 10px 12px;
-  color: rgba(255,255,255,0.8);
+  padding: 14px var(--spacing-md);
+  color: rgba(255,255,255,0.7);
   text-decoration: none;
-  border-radius: 6px;
-  margin-bottom: 2px;
+  border-radius: var(--radius-md);
+  margin-bottom: 6px;
   cursor: pointer;
   background: none;
   border: none;
   text-align: left;
-  font-size: 13px;
-  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-item:hover {
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.08);
   color: white;
+  transform: translateX(4px);
 }
 
 .nav-item.active {
-  background-color: rgba(255,255,255,0.2);
-  color: white;
-  font-weight: 500;
+  background-color: white;
+  color: var(--color-primary);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }

@@ -1,0 +1,61 @@
+:root {
+  /* colore principale pagina - usato nella sidebar */
+  --color-primary: #003D2B;
+
+  /* sfondo principale di tutte le schermate */
+  --color-background: #F5F5F0;
+
+  /* sfondo delle card e colore dei loro bordi */
+  --color-card-background: #F9F4F4;
+  --color-border: #e2e8f0;
+
+  /* testi */
+  --color-text-main: #1D1D1D;
+  --color-text-secondary: #65676b;
+
+  --color-card-background: #F9F4F4;
+  --color-border: #e2e8f0;
+
+  /* Dimensioni titolo pricipale della pagina e sottotitoli (tabs etc.) */
+  --title-font-size: 36px;  
+  --subtitle-font-size: 24px;
+
+  --success: green;
+  --warning: orange;
+  --danger: red;
+
+  --navbar-height: 80px;
+  --sidebar-width: 300px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+
+  /* colori bottone principale e secondario */
+
+  --btn-primary-bg: #4471F2;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #3865e3;
+  --btn-primary-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --btn-primary-hover: #3865e3;
+
+
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: var(--color-text-main);
+  --btn-secondary-border-color: var(--color-primary);
+  --btn-secondary-shadow: none;
+  --btn-secondary-hover: rgba(216, 207, 207, 0.5);
+
+}

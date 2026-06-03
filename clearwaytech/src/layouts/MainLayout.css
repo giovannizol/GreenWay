@@ -1,17 +1,17 @@
 .main-layout {
   display: flex;
-  min-height: 100vh;
   width: 100%;
+  height: 100%;
 }
 
 .layout-body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #f8fafc;
+  background-color: var(--color-background);
 }
 
 .layout-content {
-  padding: 24px;
-  flex: 1;
+  padding: var(--spacing-lg);
+  min-height: calc(100vh - var(--navbar-height));
 }
