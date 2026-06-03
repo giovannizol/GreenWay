@@ -5,12 +5,14 @@ import './MainLayout.css'
 
 interface MainLayoutProps {
   children: React.ReactNode
+  activeItem: string
+  setActiveItem: (item: string) => void
 }
 
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout({ children, activeItem, setActiveItem }: MainLayoutProps) {
   return (
     <div className="main-layout">
-      <Sidebar />
+      <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />
       <div className="layout-body">
         <Header />
         <main className="layout-content">
