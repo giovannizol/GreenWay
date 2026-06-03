@@ -1,4 +1,4 @@
-.manutenzione-page {
+.gestione-page {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
@@ -45,6 +45,12 @@
 }
 
 .btn-action:hover {
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-action.active {
   background-color: var(--color-primary);
   color: white;
   box-shadow: var(--shadow-md);

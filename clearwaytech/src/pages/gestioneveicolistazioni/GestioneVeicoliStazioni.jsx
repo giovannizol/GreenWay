@@ -59,7 +59,7 @@ const GestioneVeicoliStazioni = () => {
   });
 
   return (
-    <div className='manutenzione-page'>
+    <div className='gestione-page'>
       <div className='buttons-container'>
         <button 
           className={`btn-action ${activeTab === 'veicoli' ? 'active' : ''}`}
