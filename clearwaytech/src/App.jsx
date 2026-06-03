@@ -1,7 +1,12 @@
-"use client"
-
+import { MainLayout } from "./layouts/MainLayout"
 import Dashboard from './pages/dashboard/Dashboard'
 
-export default function App() {
-  return <Dashboard />
+function App() {
+  return (
+    <MainLayout>
+      <Dashboard />
+    </MainLayout>
+  )
 }
+
+export default App
