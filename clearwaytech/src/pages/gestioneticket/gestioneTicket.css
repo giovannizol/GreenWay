@@ -8,17 +8,6 @@
   font-family: inherit;
 }
 
-.page-header h1 {
-  font-size: var(--title-font-size);
-  color: var(--color-primary);
-  margin-bottom: 4px;
-  font-weight: 700;
-}
-
-.page-header p {
-  color: var(--color-text-secondary);
-  font-size: 1rem;
-}
 
 .buttons-container {
   display: flex;
