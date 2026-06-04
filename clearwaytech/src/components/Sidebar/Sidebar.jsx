@@ -1,16 +1,17 @@
+import { NavLink } from "react-router-dom"
 import "./Sidebar.css"
 
 const menuItems = [
-  "Dashboard",
-  "Monitoraggio e Analisi",
-  "Manutenzioni",
-  "Gestione Flotta e Stazioni",
-  "Amministrazione",
-  "Calendario",
-  "Gestione Ticket",
+  { name: "Dashboard", path: "/" },
+  { name: "Monitoraggio e Analisi", path: "/monitoraggio" },
+  { name: "Manutenzioni", path: "/manutenzione" },
+  { name: "Gestione Flotta e Stazioni", path: "/flotta" },
+  { name: "Amministrazione", path: "/amministrazione" },
+  { name: "Calendario", path: "/calendario" },
+  { name: "Gestione Ticket", path: "/ticket" },
 ]
 
-export function Sidebar({ selectedItem = "Dashboard", onSelectItem = () => {} }) {
+export function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
@@ -21,13 +22,13 @@ export function Sidebar({ selectedItem = "Dashboard", onSelectItem = () => {} })
       
       <nav className="sidebar-nav">
         {menuItems.map((item) => (
-          <button
-            key={item}
-            onClick={() => onSelectItem(item)}
-            className={`nav-item ${selectedItem === item ? "active" : ""}`}
+          <NavLink
+            key={item.name}
+            to={item.path}
+            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
           >
-            {item}
-          </button>
+            {item.name}
+          </NavLink>
         ))}
       </nav>
     </aside>
