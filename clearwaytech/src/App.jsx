@@ -1,3 +1,5 @@
+import { MainLayout } from "./layouts/MainLayout/MainLayout";
+import Manutenzione from "./pages/manutenzione/Manutenzione";
 import { AuthProvider } from './context/AuthProvider'
 import { useAuth } from './context/useAuth'
 import { MainLayout } from './layouts/MainLayout'
