@@ -1,23 +1,35 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 import Manutenzione from "./pages/manutenzione/Manutenzione";
-import { AuthProvider } from './context/AuthProvider'
-import { useAuth } from './context/useAuth'
-import { MainLayout } from './layouts/MainLayout'
-import Dashboard from './pages/dashboard/Dashboard'
-import Login from './pages/login/login'
+import { AuthProvider } from "./context/AuthProvider";
+import { useAuth } from "./context/useAuth";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Login from "./pages/login/login";
 
 function AppContent() {
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   if (!user) {
-    return <Login />
+    return <Login />;
   }
 
   return (
-    <MainLayout>
-      <Dashboard />
-    </MainLayout>
-  )
+    <Router>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/manutenzione" element={<Manutenzione />} />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </MainLayout>
+    </Router>
+  );
 }
 
 function App() {
@@ -25,7 +37,7 @@ function App() {
     <AuthProvider>
       <AppContent />
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
