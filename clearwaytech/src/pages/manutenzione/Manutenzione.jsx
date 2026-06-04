@@ -8,6 +8,7 @@ const Manutenzione = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCleaningModalOpen, setIsCleaningModalOpen] = useState(false);
   const [currentView, setCurrentView] = useState("default");
+  const [statusFilter, setStatusFilter] = useState("Programmato");
 
   // dati fittizi form manutenzione
   const maintenanceSteps = [
@@ -117,11 +118,11 @@ const Manutenzione = () => {
 
   // Campi fittizi per tabella Default
   const defaultHeaders = [
-    { key: "id", label: "ID" },
-    { key: "veicolo", label: "Veicolo" },
-    { key: "tipo", label: "Tipo Intervento" },
-    { key: "data", label: "Data" },
-    { key: "stato", label: "Stato" },
+    { key: "id", label: "ID", width: "80px" },
+    { key: "veicolo", label: "Veicolo", width: "200px" },
+    { key: "tipo", label: "Tipo Intervento", width: "180px" },
+    { key: "data", label: "Data", width: "120px" },
+    { key: "stato", label: "Stato", width: "150px" },
   ];
 
   const defaultData = [
@@ -146,15 +147,36 @@ const Manutenzione = () => {
       data: "04/06/2026",
       stato: "Completato",
     },
+    {
+      id: "004",
+      veicolo: "Scania R500",
+      tipo: "Manutenzione",
+      data: "07/06/2026",
+      stato: "Programmato",
+    },
+    {
+      id: "005",
+      veicolo: "Volvo FH",
+      tipo: "Manutenzione",
+      data: "03/06/2026",
+      stato: "In corso",
+    },
+    {
+      id: "006",
+      veicolo: "Fiat Panda",
+      tipo: "Pulizia",
+      data: "02/06/2026",
+      stato: "Completato",
+    },
   ];
 
   // Campi fittizi per tabella Storico
   const historyHeaders = [
-    { key: "id", label: "ID" },
-    { key: "veicolo", label: "Veicolo" },
-    { key: "intervento", label: "Dettaglio" },
-    { key: "costo", label: "Costo (€)" },
-    { key: "data_chiusura", label: "Completato il" },
+    { key: "id", label: "ID", width: "80px" },
+    { key: "veicolo", label: "Veicolo", width: "200px" },
+    { key: "intervento", label: "Dettaglio", width: "250px" },
+    { key: "costo", label: "Costo (€)", width: "120px" },
+    { key: "data_chiusura", label: "Completato il", width: "150px" }
   ];
 
   const historyData = [
@@ -195,9 +217,13 @@ const Manutenzione = () => {
 
   const handleCleaningFormComplete = (formData) => {
     console.log("Form Pulizie Completato:", formData);
-    alert("Prenotazione Pulizie Inviata");
+    alert("Prenotazione Pulizie Inviata!");
     setIsCleaningModalOpen(false);
   };
+
+  const filteredDefaultData = statusFilter === "Tutti" 
+    ? defaultData 
+    : defaultData.filter(item => item.stato === statusFilter);
 
   return (
     <div className="manutenzione-page">
@@ -242,14 +268,31 @@ const Manutenzione = () => {
       </div>
 
       <div className="table-section">
-        <h2 style={{ marginBottom: "15px", color: "var(--color-text-main)" }}>
-          {currentView === "history"
-            ? "Storico Interventi"
-            : "Interventi Programmati"}
-        </h2>
+        <div className="table-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+          <h2 style={{ color: "var(--color-text-main)" }}>
+            {currentView === "history"
+              ? "Storico Interventi"
+              : "Interventi Programmati"}
+          </h2>
+          
+          {currentView === "default" && (
+            <div className="status-filters">
+              {["Programmato", "In corso", "Completato", "Tutti"].map((status) => (
+                <button
+                  key={status}
+                  className={`filter-tab ${statusFilter === status ? 'active' : ''}`}
+                  onClick={() => setStatusFilter(status)}
+                >
+                  {status}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <Table
           headers={currentView === "history" ? historyHeaders : defaultHeaders}
-          data={currentView === "history" ? historyData : defaultData}
+          data={currentView === "history" ? historyData : filteredDefaultData}
         />
       </div>
 

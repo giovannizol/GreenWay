@@ -10,7 +10,10 @@ const Table = ({ headers, data, className = "" }) => {
         <thead>
           <tr>
             {headers.map((header, index) => (
-              <th key={index}>
+              <th 
+                key={index} 
+                style={header.width ? { width: header.width } : {}}
+              >
                 {typeof header === "string" ? header : header.label}
               </th>
             ))}
