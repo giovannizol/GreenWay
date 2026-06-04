@@ -1,0 +1,95 @@
+/* NotificationPanel.css */
+.side-panel {
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: auto;
+  height: 100%;
+  min-width: 0;
+  padding: 6px 0;
+}
+
+.panel-section {
+  flex: 0 0 auto;
+  overflow-y: visible;
+  padding: 6px 8px;
+}
+
+.panel-section:first-child {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.see-all {
+  font-size: 9px;
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.list-item {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+}
+
+.item-icon-box {
+  width: 20px;
+  height: 20px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+.item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-title {
+  font-size: 9px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1px;
+}
+
+.item-desc {
+  font-size: 8px;
+  color: #64748b;
+}
+
+.item-time {
+  font-size: 8px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
