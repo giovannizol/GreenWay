@@ -134,11 +134,9 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "05/06/2026",
       stato: "In corso",
-      extra: {
-        tecnico: "Marco Bianchi",
-        officina: "AutoExpress",
-        note: "Controllo freni e livelli.",
-      },
+      tecnico: "Marco Bianchi",
+      azienda: "AutoExpress",
+      extra: { note: "Controllo freni e livelli." },
     },
     {
       id: "002",
@@ -158,11 +156,9 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "04/06/2026",
       stato: "Completato",
-      extra: {
-        tecnico: "Luca Rossi",
-        officina: "General Motors",
-        note: "Cambio olio effettuato.",
-      },
+      tecnico: "Luca Rossi",
+      azienda: "General Motors",
+      extra: { note: "Cambio olio effettuato." },
     },
     {
       id: "004",
@@ -170,11 +166,9 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "07/06/2026",
       stato: "Programmato",
-      extra: {
-        tecnico: "Paolo Neri",
-        officina: "Truck Center",
-        note: "Revisione periodica.",
-      },
+      tecnico: "Paolo Neri",
+      azienda: "Truck Center",
+      extra: { note: "Revisione periodica." },
     },
     {
       id: "005",
@@ -182,11 +176,9 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "03/06/2026",
       stato: "In corso",
-      extra: {
-        tecnico: "Roberto Verdi",
-        officina: "Truck Service",
-        note: "Sostituzione pastiglie anteriori.",
-      },
+      tecnico: "Roberto Verdi",
+      azienda: "Truck Service",
+      extra: { note: "Sostituzione pastiglie anteriori." },
     },
     {
       id: "006",
@@ -204,49 +196,64 @@ const Manutenzione = () => {
 
   // Campi fittizi per tabella Storico
   const historyHeaders = [
-    { key: "id", label: "ID", width: "80px" },
-    { key: "veicolo", label: "Veicolo", width: "200px" },
-    { key: "intervento", label: "Dettaglio", width: "250px" },
-    { key: "costo", label: "Costo (€)", width: "120px" },
-    { key: "data_chiusura", label: "Completato il", width: "150px" },
+    { key: "veicolo", label: "Veicolo", width: "150px" },
+    { key: "data", label: "Data", width: "110px" },
+    { key: "stato", label: "Stato", width: "120px" },
+    { key: "tecnico", label: "Tecnico", width: "150px" },
+    { key: "azienda", label: "Azienda", width: "150px" },
+    { key: "intervento", label: "Intervento", width: "200px" },
   ];
 
   const historyData = [
     {
       id: "H001",
       veicolo: "Iveco Daily",
+      data: "10/05/2026",
+      stato: "Completato",
+      tecnico: "Marco Bianchi",
+      azienda: "AutoExpress",
       intervento: "Cambio Olio",
-      costo: "150",
-      data_chiusura: "10/05/2026",
-      extra: {
-        tecnico: "Marco Bianchi",
-        officina: "AutoExpress",
-        ricambi: "Olio 5W30, Filtro Olio",
-      },
+      extra: { costo: "150", ricambi: "Olio 5W30, Filtro Olio" },
     },
     {
       id: "H002",
       veicolo: "Fiat Panda",
-      intervento: "Sostituzione Freni",
-      costo: "280",
-      data_chiusura: "15/05/2026",
-      extra: {
-        tecnico: "Luca Rossi",
-        officina: "General Motors",
-        ricambi: "Pastiglie anteriori, Dischi",
-      },
+      data: "15/05/2026",
+      stato: "Completato",
+      tecnico: "Luca Rossi",
+      azienda: "General Motors",
+      intervento: "Freni",
+      extra: { costo: "280", ricambi: "Pastiglie anteriori, Dischi" },
     },
     {
       id: "H003",
       veicolo: "Mercedes Sprinter",
+      data: "20/05/2026",
+      stato: "Completato",
+      tecnico: "Roberto Verdi",
+      azienda: "Truck Service",
       intervento: "Revisione",
-      costo: "80",
-      data_chiusura: "20/05/2026",
-      extra: {
-        tecnico: "Roberto Verdi",
-        officina: "Truck Service",
-        note: "Superata senza anomalie.",
-      },
+      extra: { costo: "80", note: "Superata senza anomalie." },
+    },
+    {
+      id: "H004",
+      veicolo: "Iveco Daily",
+      data: "02/04/2026",
+      stato: "Completato",
+      tecnico: "Marco Bianchi",
+      azienda: "AutoExpress",
+      intervento: "Pneumatici",
+      extra: { costo: "450", note: "Sostituzione treno gomme estivo." },
+    },
+    {
+      id: "H005",
+      veicolo: "Iveco Daily",
+      data: "15/01/2026",
+      stato: "Completato",
+      tecnico: "G. Galli",
+      azienda: "AutoExpress",
+      intervento: "Batteria",
+      extra: { costo: "120", note: "Sostituzione batteria 80Ah." },
     },
   ];
 
@@ -283,15 +290,18 @@ const Manutenzione = () => {
       ? defaultData
       : defaultData.filter((item) => item.stato === statusFilter);
 
+  // Trova tutti gli interventi per il veicolo selezionato (solo MANUTENZIONI)
+  const vehicleHistory = selectedRecord
+    ? [...defaultData, ...historyData]
+        .filter((item) => item.veicolo === selectedRecord.veicolo)
+        .filter((item) => item.tipo === "Manutenzione" || item.intervento) // Esclude le pulizie (che hanno tipo: "Pulizia")
+    : [];
+
   return (
     <div className="manutenzione-page">
       <div className="page-header">
         <h1>Gestione Manutenzione</h1>
-        <p>
-          {currentView === "history"
-            ? "Consulta lo storico degli interventi passati."
-            : "Monitora e prenota gli interventi per la flotta."}
-        </p>
+        <p>Monitora e prenota gli interventi per la flotta.</p>
       </div>
 
       <div className="buttons-container">
@@ -337,7 +347,7 @@ const Manutenzione = () => {
         >
           <h2 style={{ color: "var(--color-text-main)" }}>
             {currentView === "history"
-              ? "Storico Interventi"
+              ? "Storico Manutenzioni"
               : "Interventi Programmati"}
           </h2>
 
@@ -391,7 +401,7 @@ const Manutenzione = () => {
         </div>
       </Modal>
 
-      {/* Modale dettagli record tabella */}
+      {/* Modale Dettaglio Record */}
       <Modal isOpen={isDetailModalOpen} onClose={handleCloseDetailModal}>
         <div style={{ padding: "30px" }}>
           <h2
@@ -402,7 +412,7 @@ const Manutenzione = () => {
               paddingBottom: "10px",
             }}
           >
-            Dettaglio Intervento #{selectedRecord?.id}
+            Dettaglio Manutenzione #{selectedRecord?.id}
           </h2>
 
           <div
@@ -419,50 +429,38 @@ const Manutenzione = () => {
                 <strong>Veicolo:</strong> {selectedRecord?.veicolo}
               </p>
               <p>
-                <strong>Tipo/Dettaglio:</strong>{" "}
-                {selectedRecord?.tipo || selectedRecord?.intervento}
+                <strong>Intervento:</strong>{" "}
+                {selectedRecord?.intervento || selectedRecord?.tipo}
               </p>
               <p>
-                <strong>Data:</strong>{" "}
-                {selectedRecord?.data || selectedRecord?.data_chiusura}
+                <strong>Data:</strong> {selectedRecord?.data}
               </p>
-              {selectedRecord?.stato && (
-                <p>
-                  <strong>Stato:</strong> {selectedRecord?.stato}
-                </p>
-              )}
-              {selectedRecord?.costo && (
-                <p>
-                  <strong>Costo:</strong> €{selectedRecord?.costo}
-                </p>
-              )}
+              <p>
+                <strong>Stato:</strong> {selectedRecord?.stato}
+              </p>
             </div>
             <div>
-              {selectedRecord?.extra?.tecnico && (
+              <p>
+                <strong>Tecnico:</strong>{" "}
+                {selectedRecord?.tecnico ||
+                  selectedRecord?.extra?.tecnico ||
+                  "N/D"}
+              </p>
+              <p>
+                <strong>Azienda/Officina:</strong>{" "}
+                {selectedRecord?.azienda ||
+                  selectedRecord?.extra?.officina ||
+                  "N/D"}
+              </p>
+              {selectedRecord?.extra?.costo && (
                 <p>
-                  <strong>Tecnico:</strong> {selectedRecord?.extra.tecnico}
-                </p>
-              )}
-              {selectedRecord?.extra?.officina && (
-                <p>
-                  <strong>Officina:</strong> {selectedRecord?.extra.officina}
-                </p>
-              )}
-              {selectedRecord?.extra?.luogo && (
-                <p>
-                  <strong>Luogo:</strong> {selectedRecord?.extra.luogo}
-                </p>
-              )}
-              {selectedRecord?.extra?.tipo_lavaggio && (
-                <p>
-                  <strong>Lavaggio:</strong>{" "}
-                  {selectedRecord?.extra.tipo_lavaggio}
+                  <strong>Costo:</strong> €{selectedRecord.extra.costo}
                 </p>
               )}
             </div>
             <div style={{ gridColumn: "span 2" }}>
               <p>
-                <strong>Note aggiuntive:</strong>
+                <strong>Note/Dettagli:</strong>
               </p>
               <p
                 style={{
@@ -475,17 +473,111 @@ const Manutenzione = () => {
               >
                 {selectedRecord?.extra?.note ||
                   selectedRecord?.extra?.ricambi ||
-                  "Nessuna nota aggiuntiva disponibile per questo intervento."}
+                  "Dettaglio standard dell'intervento selezionato."}
               </p>
             </div>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button
-              className="btn-prev"
-              onClick={handleCloseDetailModal}
-              style={{ padding: "10px 25px" }}
+          {/* Cronologia Veicolo */}
+          <div className="vehicle-history" style={{ marginTop: "30px" }}>
+            <h3 style={{ marginBottom: "15px", color: "var(--color-primary)" }}>
+              Cronologia Manutenzioni: {selectedRecord?.veicolo}
+            </h3>
+            <div
+              style={{
+                border: "1px solid var(--color-border)",
+                borderRadius: "8px",
+                overflow: "hidden",
+              }}
             >
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  fontSize: "0.9rem",
+                }}
+              >
+                <thead style={{ backgroundColor: "#f1f5f9" }}>
+                  <tr>
+                    <th
+                      style={{
+                        padding: "10px",
+                        textAlign: "left",
+                        borderBottom: "1px solid var(--color-border)",
+                      }}
+                    >
+                      Data
+                    </th>
+                    <th
+                      style={{
+                        padding: "10px",
+                        textAlign: "left",
+                        borderBottom: "1px solid var(--color-border)",
+                      }}
+                    >
+                      Intervento
+                    </th>
+                    <th
+                      style={{
+                        padding: "10px",
+                        textAlign: "left",
+                        borderBottom: "1px solid var(--color-border)",
+                      }}
+                    >
+                      Stato
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vehicleHistory.map((h, i) => (
+                    <tr
+                      key={i}
+                      style={{
+                        backgroundColor:
+                          h.id === selectedRecord.id
+                            ? "#f0fdf4"
+                            : "transparent",
+                      }}
+                    >
+                      <td
+                        style={{
+                          padding: "10px",
+                          borderBottom: "1px solid var(--color-border)",
+                        }}
+                      >
+                        {h.data}
+                      </td>
+                      <td
+                        style={{
+                          padding: "10px",
+                          borderBottom: "1px solid var(--color-border)",
+                        }}
+                      >
+                        {h.intervento || h.tipo}
+                      </td>
+                      <td
+                        style={{
+                          padding: "10px",
+                          borderBottom: "1px solid var(--color-border)",
+                        }}
+                      >
+                        {h.stato}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "30px",
+            }}
+          >
+            <button className="btn-prev" onClick={handleCloseDetailModal}>
               Chiudi
             </button>
           </div>
