@@ -3,13 +3,16 @@
   flex-direction: column;
   gap: var(--spacing-lg);
   animation: fadeIn 0.5s ease;
-  height: 100%;
+  min-height: 100%;
+  color: var(--color-text-main);
+  font-family: inherit;
 }
 
 .page-header h1 {
   font-size: var(--title-font-size);
   color: var(--color-primary);
   margin-bottom: 4px;
+  font-weight: 700;
 }
 
 .page-header p {
@@ -29,28 +32,27 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--spacing-lg);
-  background-color: white;
-  color: var(--color-primary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  padding: calc(var(--spacing-md) + 4px) var(--spacing-lg);
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--btn-secondary-border-color);
+  border-radius: var(--radius-lg);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--btn-secondary-shadow);
 }
 
 .btn-action:hover {
-  background-color: var(--color-primary);
-  color: white;
-  box-shadow: var(--shadow-md);
+  background-color: var(--btn-secondary-hover);
 }
 
 .btn-action.active {
-  background-color: var(--color-primary);
-  color: white;
-  box-shadow: var(--shadow-md);
+  background-color: #000000;
+  color: var(--btn-primary-text);
+  box-shadow: var(--btn-primary-shadow);
+  border-color: #000000;
 }
 
 .search-bar-container {
@@ -60,8 +62,9 @@
 .search-input {
   width: 100%;
   padding: 16px 18px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
+  background-color: var(--color-card-background);
   font-size: 1rem;
   outline: none;
   box-shadow: var(--shadow-sm);
@@ -70,7 +73,7 @@
 
 .search-input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+  box-shadow: 0 0 0 4px rgba(68, 113, 242, 0.14);
 }
 
 .table-section {
@@ -80,7 +83,7 @@
 
 .detail-grid {
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
 
 .detail-label {
@@ -94,8 +97,9 @@
 .detail-select {
   width: 100%;
   padding: 14px 16px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
+  background-color: var(--color-card-background);
   font-size: 1rem;
   outline: none;
   box-shadow: var(--shadow-sm);
@@ -106,7 +110,7 @@
 .detail-textarea:focus,
 .detail-select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+  box-shadow: 0 0 0 4px rgba(68, 113, 242, 0.14);
 }
 
 .detail-textarea {
