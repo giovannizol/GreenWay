@@ -119,6 +119,11 @@ const GestioneTicket = () => {
 
   return (
     <div className='gestione-page'>
+      <div className="page-header">
+        <h1>Gestione Ticket</h1>
+        <p>Visualizza e gestisci le segnalazioni e i ticket aperti.</p>
+      </div>
+
       <div className='buttons-container'>
         <button className={`btn-action ${assignedFilter !== 'all' ? 'active' : ''}`} onClick={toggleAssignedFilter}>
           {assignedLabel}

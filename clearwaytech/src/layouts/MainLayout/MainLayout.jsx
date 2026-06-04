@@ -1,6 +1,6 @@
 import React from 'react'
-import { Sidebar } from '../components/Sidebar/Sidebar'
-import { Header } from '../components/Header/Header'
+import { Sidebar } from '../../components/Sidebar/Sidebar'
+import { Header } from '../../components/Header/Header'
 import './MainLayout.css'
 
 export function MainLayout({ section, onSelectSection, children }) {
