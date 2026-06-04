@@ -7,13 +7,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { MainLayout } from "./layouts/MainLayout/MainLayout";
+import { MainLayout } from "./layouts/MainLayout";
 import Manutenzione from "./pages/manutenzione/Manutenzione";
 import { AuthProvider } from "./context/AuthProvider";
 import { useAuth } from "./context/useAuth";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/login";
-
+import gestioneTicket from './pages/gestioneticket/gestioneTicket';
 function AppContent() {
   const { user } = useAuth();
 
@@ -21,7 +21,7 @@ function AppContent() {
     return <Login />;
   }
 
-  const content = section === 'Gestione Ticket' ? <GestioneTicket /> : <Dashboard />
+//  const content = section === 'Gestione Ticket' ? <GestioneTicket /> : <Dashboard />
 
   return (
     <Router>
@@ -29,7 +29,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/manutenzione" element={<Manutenzione />} />
-
+          <Route path="/ticket" element={<GestioneTicket />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </MainLayout>
