@@ -1,0 +1,24 @@
+{
+  "veicoli": [
+    {
+      "id": 1,
+      "targa_codice": "GW-001",
+      "tipo": "Monopattino",
+      "stato": "Attivo",
+      "livello_batteria": 82,
+      "km_totali": 1284,
+      "ultima_revisione": "2026-05-20",
+      "data_immatricolazione": "2024-10-12"
+    },
+    {
+      "id": 2,
+      "targa_codice": "GW-002",
+      "tipo": "Bici Elettrica",
+      "stato": "In manutenzione",
+      "livello_batteria": 46,
+      "km_totali": 904,
+      "ultima_revisione": "2026-05-10",
+      "data_immatricolazione": "2024-11-02"
+    }
+  ]
+}

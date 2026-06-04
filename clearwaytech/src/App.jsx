@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import GestioneTicket from './pages/gestioneticket/gestioneTicket'
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -17,6 +20,8 @@ function AppContent() {
   if (!user) {
     return <Login />;
   }
+
+  const content = section === 'Gestione Ticket' ? <GestioneTicket /> : <Dashboard />
 
   return (
     <Router>

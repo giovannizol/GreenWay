@@ -1,0 +1,59 @@
+{
+  "tickets": [
+    {
+      "id": 1,
+      "titolo": "Login utente bloccato",
+      "descrizione": "L'utente non riesce ad accedere all'area riservata.",
+      "assegnato_a": "Marina",
+      "stato": "Aperto",
+      "priorita": "Alta",
+      "categoria": "Accesso",
+      "data_apertura": "2026-06-01",
+      "ultimo_aggiornamento": "2026-06-02"
+    },
+    {
+      "id": 2,
+      "titolo": "Guasto colonnina ricarica",
+      "descrizione": "La colonnina nel parcheggio 5 non eroga corrente.",
+      "assegnato_a": "",
+      "stato": "Aperto",
+      "priorita": "Media",
+      "categoria": "Infrastruttura",
+      "data_apertura": "2026-05-30",
+      "ultimo_aggiornamento": "2026-05-31"
+    },
+    {
+      "id": 3,
+      "titolo": "Segnalazione veicolo difettoso",
+      "descrizione": "Il veicolo GW-012 presenta un malfunzionamento dei freni.",
+      "assegnato_a": "Luca",
+      "stato": "Chiuso",
+      "priorita": "Alta",
+      "categoria": "Flotta",
+      "data_apertura": "2026-05-20",
+      "ultimo_aggiornamento": "2026-05-24"
+    },
+    {
+      "id": 4,
+      "titolo": "Richiesta informazioni fatturazione",
+      "descrizione": "Il cliente ha chiesto chiarimenti sulla fattura di maggio.",
+      "assegnato_a": "Sara",
+      "stato": "Chiuso",
+      "priorita": "Bassa",
+      "categoria": "Amministrazione",
+      "data_apertura": "2026-05-10",
+      "ultimo_aggiornamento": "2026-05-12"
+    },
+    {
+      "id": 5,
+      "titolo": "Controllo batteria veicolo",
+      "descrizione": "Il veicolo GW-021 deve essere controllato per anomalie batteria.",
+      "assegnato_a": "Sara",
+      "stato": "In corso",
+      "priorita": "Media",
+      "categoria": "Flotta",
+      "data_apertura": "2026-06-02",
+      "ultimo_aggiornamento": "2026-06-03"
+    }
+  ]
+}
