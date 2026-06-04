@@ -1,0 +1,22 @@
+{
+  "stazioni": [
+    {
+      "id": 1,
+      "nome": "Stazione Centrale",
+      "indirizzo": "Via Roma 14, Milano",
+      "tipo": "Ricarica rapida",
+      "capacita": 12,
+      "lat": 45.4642,
+      "long": 9.1900
+    },
+    {
+      "id": 2,
+      "nome": "Stazione Navigli",
+      "indirizzo": "Ripa di Porta Ticinese 20, Milano",
+      "tipo": "Standard",
+      "capacita": 8,
+      "lat": 45.4541,
+      "long": 9.1686
+    }
+  ]
+}

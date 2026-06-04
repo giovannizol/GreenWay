@@ -1,4 +1,3 @@
-import { useState } from "react"
 import "./Sidebar.css"
 
 const menuItems = [
@@ -11,9 +10,7 @@ const menuItems = [
   "Gestione Ticket",
 ]
 
-export function Sidebar() {
-  const [activeItem, setActiveItem] = useState("Dashboard")
-
+export function Sidebar({ selectedItem = "Dashboard", onSelectItem = () => {} }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
@@ -26,8 +23,8 @@ export function Sidebar() {
         {menuItems.map((item) => (
           <button
             key={item}
-            onClick={() => setActiveItem(item)}
-            className={`nav-item ${activeItem === item ? "active" : ""}`}
+            onClick={() => onSelectItem(item)}
+            className={`nav-item ${selectedItem === item ? "active" : ""}`}
           >
             {item}
           </button>
