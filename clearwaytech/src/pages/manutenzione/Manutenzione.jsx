@@ -6,9 +6,10 @@ import "./Manutenzione.css";
 
 const Manutenzione = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentView, setCurrentView] = useState("default"); // 'default' o 'history'
+  const [isCleaningModalOpen, setIsCleaningModalOpen] = useState(false);
+  const [currentView, setCurrentView] = useState("default");
 
-  // dati fittizi form
+  // dati fittizi form manutenzione
   const maintenanceSteps = [
     {
       title: "Veicolo",
@@ -68,6 +69,47 @@ const Manutenzione = () => {
           name: "tecnico",
           label: "Tecnico Referente",
           placeholder: "Nome Tecnico",
+        },
+      ],
+    },
+  ];
+
+  // dati fittizi form pulizie
+  const cleaningSteps = [
+    {
+      title: "Dettagli Pulizia",
+      fields: [
+        {
+          name: "veicolo_pulizia",
+          label: "Veicolo",
+          placeholder: "es. Iveco Daily",
+        },
+        { name: "targa_pulizia", label: "Targa", placeholder: "es. AA123BB" },
+        {
+          name: "tipo_pulizia",
+          label: "Tipo di Lavaggio",
+          type: "select",
+          options: [
+            { label: "Interno", value: "interno" },
+            { label: "Esterno", value: "esterno" },
+            { label: "Completo (Sanificazione)", value: "completo" },
+          ],
+        },
+        {
+          name: "luogo",
+          label: "Punto di Lavaggio",
+          type: "select",
+          options: [
+            { label: "Sede Centrale", value: "sede" },
+            { label: "Autolavaggio Convenzionato", value: "esterno" },
+          ],
+        },
+        { name: "data_pulizia", label: "Data Richiesta", type: "date" },
+        {
+          name: "note_pulizia",
+          label: "Note Aggiuntive",
+          type: "textarea",
+          fullWidth: true,
         },
       ],
     },
@@ -142,10 +184,19 @@ const Manutenzione = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
+  const handleOpenCleaningModal = () => setIsCleaningModalOpen(true);
+  const handleCloseCleaningModal = () => setIsCleaningModalOpen(false);
+
   const handleFormComplete = (formData) => {
     console.log("Form Manutenzione Completato:", formData);
     alert("Prenotazione Manutenzione Inviata!");
     setIsModalOpen(false);
+  };
+
+  const handleCleaningFormComplete = (formData) => {
+    console.log("Form Pulizie Completato:", formData);
+    alert("Prenotazione Pulizie Inviata");
+    setIsCleaningModalOpen(false);
   };
 
   return (
@@ -171,12 +222,15 @@ const Manutenzione = () => {
         </button>
         <button
           className="btn-action"
-          onClick={() => setCurrentView("default")}
+          onClick={() => {
+            setCurrentView("default");
+            handleOpenCleaningModal();
+          }}
         >
           Prenotazione Pulizie
         </button>
         <button
-          className={`btn-action `}
+          className={`btn-action ${currentView === "history" ? "active-view" : ""}`}
           onClick={() =>
             setCurrentView(currentView === "history" ? "default" : "history")
           }
@@ -199,6 +253,7 @@ const Manutenzione = () => {
         />
       </div>
 
+      {/* Modale Manutenzione */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div style={{ padding: "20px" }}>
           <h2 style={{ color: "var(--color-primary)", marginBottom: "20px" }}>
@@ -207,6 +262,19 @@ const Manutenzione = () => {
           <MultiStepForm
             steps={maintenanceSteps}
             onComplete={handleFormComplete}
+          />
+        </div>
+      </Modal>
+
+      {/* Modale Pulizie */}
+      <Modal isOpen={isCleaningModalOpen} onClose={handleCloseCleaningModal}>
+        <div style={{ padding: "20px" }}>
+          <h2 style={{ color: "var(--color-primary)", marginBottom: "20px" }}>
+            Prenota Pulizia Veicolo
+          </h2>
+          <MultiStepForm
+            steps={cleaningSteps}
+            onComplete={handleCleaningFormComplete}
           />
         </div>
       </Modal>
