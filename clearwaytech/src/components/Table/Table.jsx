@@ -1,7 +1,7 @@
 import React from "react";
 import "./Table.css";
 
-const Table = ({ headers, data, className = "" }) => {
+const Table = ({ headers, data, className = "", onRowClick }) => {
   if (!headers || headers.length === 0) return null;
 
   return (
@@ -22,7 +22,11 @@ const Table = ({ headers, data, className = "" }) => {
         <tbody>
           {data && data.length > 0 ? (
             data.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr 
+                key={rowIndex} 
+                onClick={() => onRowClick && onRowClick(row)}
+                style={onRowClick ? { cursor: 'pointer' } : {}}
+              >
                 {headers.map((header, colIndex) => {
                   const key = typeof header === "string" ? header : header.key;
                   return (

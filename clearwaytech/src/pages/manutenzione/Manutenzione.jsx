@@ -7,6 +7,8 @@ import "./Manutenzione.css";
 const Manutenzione = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCleaningModalOpen, setIsCleaningModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
   const [currentView, setCurrentView] = useState("default");
   const [statusFilter, setStatusFilter] = useState("Programmato");
 
@@ -132,6 +134,11 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "05/06/2026",
       stato: "In corso",
+      extra: {
+        tecnico: "Marco Bianchi",
+        officina: "AutoExpress",
+        note: "Controllo freni e livelli.",
+      },
     },
     {
       id: "002",
@@ -139,6 +146,11 @@ const Manutenzione = () => {
       tipo: "Pulizia",
       data: "06/06/2026",
       stato: "Programmato",
+      extra: {
+        luogo: "Sede Centrale",
+        tipo_lavaggio: "Completo",
+        note: "Richiesta sanificazione abitacolo.",
+      },
     },
     {
       id: "003",
@@ -146,6 +158,11 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "04/06/2026",
       stato: "Completato",
+      extra: {
+        tecnico: "Luca Rossi",
+        officina: "General Motors",
+        note: "Cambio olio effettuato.",
+      },
     },
     {
       id: "004",
@@ -153,6 +170,11 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "07/06/2026",
       stato: "Programmato",
+      extra: {
+        tecnico: "Paolo Neri",
+        officina: "Truck Center",
+        note: "Revisione periodica.",
+      },
     },
     {
       id: "005",
@@ -160,6 +182,11 @@ const Manutenzione = () => {
       tipo: "Manutenzione",
       data: "03/06/2026",
       stato: "In corso",
+      extra: {
+        tecnico: "Roberto Verdi",
+        officina: "Truck Service",
+        note: "Sostituzione pastiglie anteriori.",
+      },
     },
     {
       id: "006",
@@ -167,6 +194,11 @@ const Manutenzione = () => {
       tipo: "Pulizia",
       data: "02/06/2026",
       stato: "Completato",
+      extra: {
+        luogo: "Autolavaggio Blu",
+        tipo_lavaggio: "Esterno",
+        note: "Lavaggio rapido.",
+      },
     },
   ];
 
@@ -176,7 +208,7 @@ const Manutenzione = () => {
     { key: "veicolo", label: "Veicolo", width: "200px" },
     { key: "intervento", label: "Dettaglio", width: "250px" },
     { key: "costo", label: "Costo (€)", width: "120px" },
-    { key: "data_chiusura", label: "Completato il", width: "150px" }
+    { key: "data_chiusura", label: "Completato il", width: "150px" },
   ];
 
   const historyData = [
@@ -186,6 +218,11 @@ const Manutenzione = () => {
       intervento: "Cambio Olio",
       costo: "150",
       data_chiusura: "10/05/2026",
+      extra: {
+        tecnico: "Marco Bianchi",
+        officina: "AutoExpress",
+        ricambi: "Olio 5W30, Filtro Olio",
+      },
     },
     {
       id: "H002",
@@ -193,6 +230,11 @@ const Manutenzione = () => {
       intervento: "Sostituzione Freni",
       costo: "280",
       data_chiusura: "15/05/2026",
+      extra: {
+        tecnico: "Luca Rossi",
+        officina: "General Motors",
+        ricambi: "Pastiglie anteriori, Dischi",
+      },
     },
     {
       id: "H003",
@@ -200,6 +242,11 @@ const Manutenzione = () => {
       intervento: "Revisione",
       costo: "80",
       data_chiusura: "20/05/2026",
+      extra: {
+        tecnico: "Roberto Verdi",
+        officina: "Truck Service",
+        note: "Superata senza anomalie.",
+      },
     },
   ];
 
@@ -208,6 +255,16 @@ const Manutenzione = () => {
 
   const handleOpenCleaningModal = () => setIsCleaningModalOpen(true);
   const handleCloseCleaningModal = () => setIsCleaningModalOpen(false);
+
+  const handleRowClick = (record) => {
+    setSelectedRecord(record);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleCloseDetailModal = () => {
+    setIsDetailModalOpen(false);
+    setSelectedRecord(null);
+  };
 
   const handleFormComplete = (formData) => {
     console.log("Form Manutenzione Completato:", formData);
@@ -221,9 +278,10 @@ const Manutenzione = () => {
     setIsCleaningModalOpen(false);
   };
 
-  const filteredDefaultData = statusFilter === "Tutti" 
-    ? defaultData 
-    : defaultData.filter(item => item.stato === statusFilter);
+  const filteredDefaultData =
+    statusFilter === "Tutti"
+      ? defaultData
+      : defaultData.filter((item) => item.stato === statusFilter);
 
   return (
     <div className="manutenzione-page">
@@ -268,24 +326,34 @@ const Manutenzione = () => {
       </div>
 
       <div className="table-section">
-        <div className="table-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+        <div
+          className="table-header-row"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "15px",
+          }}
+        >
           <h2 style={{ color: "var(--color-text-main)" }}>
             {currentView === "history"
               ? "Storico Interventi"
               : "Interventi Programmati"}
           </h2>
-          
+
           {currentView === "default" && (
             <div className="status-filters">
-              {["Programmato", "In corso", "Completato", "Tutti"].map((status) => (
-                <button
-                  key={status}
-                  className={`filter-tab ${statusFilter === status ? 'active' : ''}`}
-                  onClick={() => setStatusFilter(status)}
-                >
-                  {status}
-                </button>
-              ))}
+              {["Programmato", "In corso", "Completato", "Tutti"].map(
+                (status) => (
+                  <button
+                    key={status}
+                    className={`filter-tab ${statusFilter === status ? "active" : ""}`}
+                    onClick={() => setStatusFilter(status)}
+                  >
+                    {status}
+                  </button>
+                ),
+              )}
             </div>
           )}
         </div>
@@ -293,6 +361,7 @@ const Manutenzione = () => {
         <Table
           headers={currentView === "history" ? historyHeaders : defaultHeaders}
           data={currentView === "history" ? historyData : filteredDefaultData}
+          onRowClick={handleRowClick}
         />
       </div>
 
@@ -319,6 +388,107 @@ const Manutenzione = () => {
             steps={cleaningSteps}
             onComplete={handleCleaningFormComplete}
           />
+        </div>
+      </Modal>
+
+      {/* Modale dettagli record tabella */}
+      <Modal isOpen={isDetailModalOpen} onClose={handleCloseDetailModal}>
+        <div style={{ padding: "30px" }}>
+          <h2
+            style={{
+              color: "var(--color-primary)",
+              marginBottom: "20px",
+              borderBottom: "2px solid var(--color-border)",
+              paddingBottom: "10px",
+            }}
+          >
+            Dettaglio Intervento #{selectedRecord?.id}
+          </h2>
+
+          <div
+            className="detail-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "20px",
+              marginBottom: "30px",
+            }}
+          >
+            <div>
+              <p>
+                <strong>Veicolo:</strong> {selectedRecord?.veicolo}
+              </p>
+              <p>
+                <strong>Tipo/Dettaglio:</strong>{" "}
+                {selectedRecord?.tipo || selectedRecord?.intervento}
+              </p>
+              <p>
+                <strong>Data:</strong>{" "}
+                {selectedRecord?.data || selectedRecord?.data_chiusura}
+              </p>
+              {selectedRecord?.stato && (
+                <p>
+                  <strong>Stato:</strong> {selectedRecord?.stato}
+                </p>
+              )}
+              {selectedRecord?.costo && (
+                <p>
+                  <strong>Costo:</strong> €{selectedRecord?.costo}
+                </p>
+              )}
+            </div>
+            <div>
+              {selectedRecord?.extra?.tecnico && (
+                <p>
+                  <strong>Tecnico:</strong> {selectedRecord?.extra.tecnico}
+                </p>
+              )}
+              {selectedRecord?.extra?.officina && (
+                <p>
+                  <strong>Officina:</strong> {selectedRecord?.extra.officina}
+                </p>
+              )}
+              {selectedRecord?.extra?.luogo && (
+                <p>
+                  <strong>Luogo:</strong> {selectedRecord?.extra.luogo}
+                </p>
+              )}
+              {selectedRecord?.extra?.tipo_lavaggio && (
+                <p>
+                  <strong>Lavaggio:</strong>{" "}
+                  {selectedRecord?.extra.tipo_lavaggio}
+                </p>
+              )}
+            </div>
+            <div style={{ gridColumn: "span 2" }}>
+              <p>
+                <strong>Note aggiuntive:</strong>
+              </p>
+              <p
+                style={{
+                  backgroundColor: "#f9f9f9",
+                  padding: "15px",
+                  borderRadius: "8px",
+                  border: "1px solid var(--color-border)",
+                  marginTop: "5px",
+                }}
+              >
+                {selectedRecord?.extra?.note ||
+                  selectedRecord?.extra?.ricambi ||
+                  "Nessuna nota aggiuntiva disponibile per questo intervento."}
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button
+              className="btn-prev"
+              onClick={handleCloseDetailModal}
+              style={{ padding: "10px 25px" }}
+            >
+              Chiudi
+            </button>
+          </div>
         </div>
       </Modal>
     </div>
