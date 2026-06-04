@@ -11,6 +11,7 @@ const Manutenzione = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [currentView, setCurrentView] = useState("default");
   const [statusFilter, setStatusFilter] = useState("Programmato");
+  const [prefilledData, setPrefilledData] = useState({});
 
   // dati fittizi form manutenzione
   const maintenanceSteps = [
@@ -257,7 +258,10 @@ const Manutenzione = () => {
     },
   ];
 
-  const handleOpenModal = () => setIsModalOpen(true);
+  const handleOpenModal = () => {
+    setPrefilledData({});
+    setIsModalOpen(true);
+  };
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleOpenCleaningModal = () => setIsCleaningModalOpen(true);
@@ -271,6 +275,17 @@ const Manutenzione = () => {
   const handleCloseDetailModal = () => {
     setIsDetailModalOpen(false);
     setSelectedRecord(null);
+  };
+
+  const handleAddFromDetail = () => {
+    if (selectedRecord) {
+      setPrefilledData({
+        modello: selectedRecord.veicolo,
+        // Se avessimo la targa nei dati della riga la metteremmo qui
+      });
+      setIsDetailModalOpen(false);
+      setIsModalOpen(true);
+    }
   };
 
   const handleFormComplete = (formData) => {
@@ -307,10 +322,7 @@ const Manutenzione = () => {
       <div className="buttons-container">
         <button
           className="btn-action"
-          onClick={() => {
-            setCurrentView("default");
-            handleOpenModal();
-          }}
+          onClick={handleOpenModal}
         >
           Prenotazione Manutenzione
         </button>
@@ -384,6 +396,7 @@ const Manutenzione = () => {
           <MultiStepForm
             steps={maintenanceSteps}
             onComplete={handleFormComplete}
+            initialData={prefilledData}
           />
         </div>
       </Modal>
@@ -575,10 +588,14 @@ const Manutenzione = () => {
               display: "flex",
               justifyContent: "flex-end",
               marginTop: "30px",
+              gap: "10px"
             }}
           >
             <button className="btn-prev" onClick={handleCloseDetailModal}>
               Chiudi
+            </button>
+            <button className="btn-next" onClick={handleAddFromDetail}>
+              Aggiungi
             </button>
           </div>
         </div>

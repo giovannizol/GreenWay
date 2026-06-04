@@ -3,9 +3,9 @@ import FormTabs from "./FormTabs";
 import DynamicForm from "./DynamicForm";
 import "./Form.css";
 
-const MultiStepForm = ({ steps, onComplete, onCancel }) => {
+const MultiStepForm = ({ steps, onComplete, onCancel, initialData = {} }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(initialData);
 
   const handleInputChange = (name, value) => {
     setFormData((prev) => ({
