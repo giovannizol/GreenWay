@@ -16,7 +16,7 @@ export function NotificationPanel() {
   })
 
   return (
-    <aside className="side-panel">
+    <div className="side-panel">
       <div className="panel-section">
         <div className="section-header">
           <h3 className="section-title">NOTIFICHE</h3>
@@ -58,6 +58,6 @@ export function NotificationPanel() {
           ))}
         </div>
       </div>
-    </aside>
+    </div>
   )
 }
