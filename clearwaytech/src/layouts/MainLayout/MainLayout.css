@@ -25,6 +25,10 @@
   min-height: calc(100vh - var(--navbar-height));
 }
 
+.layout-content {
+  position: relative;
+}
+
 .layout-notifications {
   width: 320px;
   background-color: var(--color-card-background);

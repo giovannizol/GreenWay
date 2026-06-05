@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import "./MapSection.css"
+import MapLegend from "./MapLegend"
 
 const markerData = [
   {
@@ -53,17 +54,64 @@ const markerData = [
 
 export function MapSection() {
   const [activeMarker, setActiveMarker] = useState(null)
+  const [expanded, setExpanded] = useState(false)
+  const [blurred, setBlurred] = useState(false)
+
+  const legendItems = useMemo(() => 
+    [...new Map(markerData.map(m => [m.name, { name: m.name, colorClass: m.colorClass }])).values()],
+    []
+  )
+
+  const [selectedCategories, setSelectedCategories] = useState(legendItems.map(it => it.name))
+
+  const toggleCategory = (category) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category) 
+        : [...prev, category]
+    )
+  }
+
+  const visibleMarkers = markerData.filter(m => selectedCategories.includes(m.name))
+
+  const popupPlacement = activeMarker && Number(activeMarker.top.replace('%', '')) < 20 ? 'bottom' : 'top'
+
+  useEffect(() => {
+    if (expanded) {
+      document.body.style.overflow = 'hidden'
+      setBlurred(false)
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [expanded])
+
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === 'Escape') setExpanded(false)
+    }
+    if (expanded) window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [expanded])
 
   return (
-    <div className="map-card">
+    <div className={`map-card ${expanded ? 'expanded' : ''}`}>
       <div className="map-wrapper" onClick={() => setActiveMarker(null)}>
+        <button
+          className={`map-expand-btn ${expanded ? 'is-expanded' : ''}`}
+          onClick={(e) => { e.stopPropagation(); setExpanded(v => !v) }}
+          aria-pressed={expanded}
+          aria-label={expanded ? 'Riduci mappa' : 'Espandi mappa'}
+        >
+          {expanded ? '<>' : '><'}
+        </button>
         <iframe
-          className="map-iframe"
+          className={`map-iframe ${blurred && !expanded ? 'is-blurred' : ''}`}
           title="Mappa"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=9.12078857421875%2C45.25013418721634%2C10.7830810546875%2C45.822425936265016&layer=mapnik"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=12.59%2C45.88%2C12.73%2C46.02&layer=mapnik"
         />
 
-        {markerData.map(marker => (
+        {visibleMarkers.map(marker => (
           <div
             key={marker.id}
             className={`map-marker ${marker.colorClass}`}
@@ -77,9 +125,15 @@ export function MapSection() {
           </div>
         ))}
 
-        {activeMarker && (
+        {/* <MapLegend 
+          items={legendItems} 
+          selectedItems={selectedCategories} 
+          onToggle={toggleCategory} 
+        /> */}
+
+        {activeMarker && visibleMarkers.some(m => m.id === activeMarker.id) && (
           <div
-            className="map-popup"
+            className={`map-popup ${popupPlacement === 'bottom' ? 'bottom' : 'top'}`}
             style={{ left: activeMarker.left, top: activeMarker.top }}
             onClick={(event) => event.stopPropagation()}
           >
@@ -113,7 +167,22 @@ export function MapSection() {
         )}
       </div>
       <div className="map-footer">
-        Legenda per la mappa
+        <div className="map-legend-footer">
+          {legendItems.map((it, idx) => {
+            const isSelected = selectedCategories.includes(it.name);
+            return (
+              <div 
+                key={idx} 
+                className={`footer-legend-item ${isSelected ? 'active' : 'inactive'}`}
+                onClick={() => toggleCategory(it.name)}
+                style={{ cursor: 'pointer' }}
+              >
+                <span className={`footer-legend-color ${it.colorClass}`} />
+                <span className="footer-legend-label">{it.name}</span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   )
