@@ -1,7 +1,7 @@
 import React from "react";
-import { Sidebar } from "../components/Sidebar/Sidebar";
-import { Header } from "../components/Header/Header";
-import { NotificationPanel } from "../components/NotificationPanel/NotificationPanel";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
+import { Header } from "../../components/Header/Header";
+import { NotificationPanel } from "../../components/NotificationPanel/NotificationPanel";
 import "./MainLayout.css";
 
 export function MainLayout({ section, onSelectSection, children }) {
