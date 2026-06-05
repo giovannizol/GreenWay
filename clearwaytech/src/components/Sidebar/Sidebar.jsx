@@ -5,7 +5,7 @@ const menuItems = [
   { name: "Dashboard", path: "/" },
   { name: "Monitoraggio e Analisi", path: "/monitoraggio" },
   { name: "Manutenzioni", path: "/manutenzione" },
-  { name: "Gestione Flotta e Stazioni", path: "/flotta" },
+  { name: "Gestione Flotta, Stazioni e Utenti", path: "/flotta" },
   // { name: "Amministrazione", path: "/amministrazione" },
   // { name: "Calendario", path: "/calendario" },
   { name: "Gestione Ticket", path: "/ticket" },

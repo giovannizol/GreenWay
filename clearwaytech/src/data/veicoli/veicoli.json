@@ -1,8 +1,10 @@
-{"veicoli": [
+{
+  "veicoli": [
     {
       "id": 101,
       "id_stazione": 1,
-      "tipo": "auto",
+      "tipo": "Automobile elettrica",
+      "modello": "Tesla Model 3",
       "targa_codice": "FX123XY",
       "stato": "disponibile",
       "livello_batteria": 85,
@@ -14,7 +16,8 @@
     {
       "id": 102,
       "id_stazione": 1,
-      "tipo": "auto",
+      "tipo": "Automobile elettrica",
+      "modello": "Renault Zoe",
       "targa_codice": "GJ987ZZ",
       "stato": "caricando",
       "livello_batteria": 42,
@@ -26,7 +29,8 @@
     {
       "id": 103,
       "id_stazione": null,
-      "tipo": "auto",
+      "tipo": "Automobile elettrica",
+      "modello": "Fiat 500e",
       "targa_codice": "HA456AA",
       "stato": "in_uso",
       "livello_batteria": 60,
@@ -38,10 +42,11 @@
     {
       "id": 201,
       "id_stazione": 2,
-      "tipo": "bici",
-      "targa_codice": "BICI-9942",
+      "tipo": "Bicicletta elettrica",
+      "modello": "Atala B-Cross",
+      "targa_codice": "BIKE-9942",
       "stato": "disponibile",
-      "livello_batteria": null,
+      "livello_batteria": 95,
       "km_totali": 340.10,
       "ultima_revisione": "2025-09-01",
       "data_immatricolazione": "2024-03-15",
@@ -50,10 +55,11 @@
     {
       "id": 202,
       "id_stazione": 2,
-      "tipo": "bici",
-      "targa_codice": "BICI-1103",
+      "tipo": "Bicicletta elettrica",
+      "modello": "Bianchi E-Omnia",
+      "targa_codice": "BIKE-1103",
       "stato": "guasto",
-      "livello_batteria": null,
+      "livello_batteria": 15,
       "km_totali": 1205.80,
       "ultima_revisione": "2025-12-10",
       "data_immatricolazione": "2024-03-15",
