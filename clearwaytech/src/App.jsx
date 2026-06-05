@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import GestioneTicket from './pages/gestioneticket/gestioneTicket'
+import { useState } from "react";
+import GestioneTicket from "./pages/gestioneticket/gestioneTicket";
 
 import {
   BrowserRouter as Router,
@@ -12,8 +12,9 @@ import Manutenzione from "./pages/manutenzione/Manutenzione";
 import { AuthProvider } from "./context/AuthProvider";
 import { useAuth } from "./context/useAuth";
 import Dashboard from "./pages/dashboard/Dashboard";
+import GestioneFlotta from "./pages/monitoraggio-e-analisi/GestioneFlotta";
 import Login from "./pages/login/login";
-import GestioneVeicoliStazioni from './pages/gestioneveicolistazioni/GestioneVeicoliStazioni';
+import GestioneVeicoliStazioni from "./pages/gestioneveicolistazioni/GestioneVeicoliStazioni";
 function AppContent() {
   const { user } = useAuth();
 
@@ -21,13 +22,14 @@ function AppContent() {
     return <Login />;
   }
 
-//  const content = section === 'Gestione Ticket' ? <GestioneTicket /> : <Dashboard />
+  //  const content = section === 'Gestione Ticket' ? <GestioneTicket /> : <Dashboard />
 
   return (
     <Router>
       <MainLayout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/monitoraggio" element={<GestioneFlotta />} />
           <Route path="/manutenzione" element={<Manutenzione />} />
           <Route path="/ticket" element={<GestioneTicket />} />
           <Route path="/flotta" element={<GestioneVeicoliStazioni />} />
@@ -39,18 +41,18 @@ function AppContent() {
 }
 
 function App() {
-  const [activeItem, setActiveItem] = useState("Dashboard")
+  const [activeItem, setActiveItem] = useState("Dashboard");
 
   const renderPage = () => {
     switch (activeItem) {
       case "Dashboard":
-        return <Dashboard />
+        return <Dashboard />;
       case "Gestione Flotta e Stazioni":
-        return <GestioneVeicoliStazioni />
+        return <GestioneVeicoliStazioni />;
       default:
-        return <Dashboard />
+        return <Dashboard />;
     }
-  }
+  };
 
   return (
     <AuthProvider>
