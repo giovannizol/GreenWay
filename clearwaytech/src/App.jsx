@@ -13,7 +13,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import { useAuth } from "./context/useAuth";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/login";
-import gestioneTicket from './pages/gestioneticket/gestioneTicket';
+import GestioneVeicoliStazioni from './pages/gestioneveicolistazioni/GestioneVeicoliStazioni';
 function AppContent() {
   const { user } = useAuth();
 
@@ -30,6 +30,7 @@ function AppContent() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/manutenzione" element={<Manutenzione />} />
           <Route path="/ticket" element={<GestioneTicket />} />
+          <Route path="/flotta" element={<GestioneVeicoliStazioni />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </MainLayout>
@@ -38,6 +39,19 @@ function AppContent() {
 }
 
 function App() {
+  const [activeItem, setActiveItem] = useState("Dashboard")
+
+  const renderPage = () => {
+    switch (activeItem) {
+      case "Dashboard":
+        return <Dashboard />
+      case "Gestione Flotta e Stazioni":
+        return <GestioneVeicoliStazioni />
+      default:
+        return <Dashboard />
+    }
+  }
+
   return (
     <AuthProvider>
       <AppContent />

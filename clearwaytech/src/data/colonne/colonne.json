@@ -1,0 +1,32 @@
+{
+   "colonne_ricarica": [
+    {
+      "id": 1,
+      "numero_stazione": 1,
+      "id_stazione": 1,
+      "id_veicolo_collegato": 102,
+      "stato": "caricando"
+    },
+    {
+      "id": 2,
+      "numero_stazione": 2,
+      "id_stazione": 1,
+      "id_veicolo_collegato": null,
+      "stato": "libera"
+    },
+    {
+      "id": 3,
+      "numero_stazione": 1,
+      "id_stazione": 3,
+      "id_veicolo_collegato": null,
+      "stato": "guasta"
+    },
+    {
+      "id": 4,
+      "numero_stazione": 2,
+      "id_stazione": 3,
+      "id_veicolo_collegato": null,
+      "stato": "libera"
+    }
+  ] 
+}

@@ -1,24 +1,63 @@
-{
-  "veicoli": [
+{"veicoli": [
     {
-      "id": 1,
-      "targa_codice": "GW-001",
-      "tipo": "Monopattino",
-      "stato": "Attivo",
-      "livello_batteria": 82,
-      "km_totali": 1284,
-      "ultima_revisione": "2026-05-20",
-      "data_immatricolazione": "2024-10-12"
+      "id": 101,
+      "id_stazione": 1,
+      "tipo": "auto",
+      "targa_codice": "FX123XY",
+      "stato": "disponibile",
+      "livello_batteria": 85,
+      "km_totali": 12450.50,
+      "ultima_revisione": "2025-04-12",
+      "data_immatricolazione": "2023-05-20",
+      "created_at": "2023-05-21T08:30:00Z"
     },
     {
-      "id": 2,
-      "targa_codice": "GW-002",
-      "tipo": "Bici Elettrica",
-      "stato": "In manutenzione",
-      "livello_batteria": 46,
-      "km_totali": 904,
-      "ultima_revisione": "2026-05-10",
-      "data_immatricolazione": "2024-11-02"
+      "id": 102,
+      "id_stazione": 1,
+      "tipo": "auto",
+      "targa_codice": "GJ987ZZ",
+      "stato": "caricando",
+      "livello_batteria": 42,
+      "km_totali": 3120.00,
+      "ultima_revisione": "2026-01-15",
+      "data_immatricolazione": "2025-02-10",
+      "created_at": "2025-02-11T10:15:00Z"
+    },
+    {
+      "id": 103,
+      "id_stazione": null,
+      "tipo": "auto",
+      "targa_codice": "HA456AA",
+      "stato": "in_uso",
+      "livello_batteria": 60,
+      "km_totali": 850.20,
+      "ultima_revisione": null,
+      "data_immatricolazione": "2025-11-01",
+      "created_at": "2025-11-02T14:22:18Z"
+    },
+    {
+      "id": 201,
+      "id_stazione": 2,
+      "tipo": "bici",
+      "targa_codice": "BICI-9942",
+      "stato": "disponibile",
+      "livello_batteria": null,
+      "km_totali": 340.10,
+      "ultima_revisione": "2025-09-01",
+      "data_immatricolazione": "2024-03-15",
+      "created_at": "2024-03-15T09:00:00Z"
+    },
+    {
+      "id": 202,
+      "id_stazione": 2,
+      "tipo": "bici",
+      "targa_codice": "BICI-1103",
+      "stato": "guasto",
+      "livello_batteria": null,
+      "km_totali": 1205.80,
+      "ultima_revisione": "2025-12-10",
+      "data_immatricolazione": "2024-03-15",
+      "created_at": "2024-03-15T09:05:00Z"
     }
   ]
 }
