@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '../../components/Table/Table';
 import Modal from '../../components/Modal/Modal';
 import MultiStepForm from '../../components/Form/MultiStepForm';
@@ -22,9 +22,33 @@ const GestioneVeicoliStazioni = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const dataVeicoli = veicoliData.veicoli || [];
-  const dataStazioni = stazioniData.stazioni || [];
-  const dataUtenti = Array.isArray(utentiData) ? utentiData : (utentiData.utenti || []);
+  const [veicoli, setVeicoli] = useState(() => {
+    const localData = localStorage.getItem('veicoli');
+    return localData ? JSON.parse(localData) : (veicoliData.veicoli || []);
+  });
+
+  const [stazioni, setStazioni] = useState(() => {
+    const localData = localStorage.getItem('stazioni');
+    return localData ? JSON.parse(localData) : (stazioniData.stazioni || []);
+  });
+
+  const [utenti, setUtenti] = useState(() => {
+    const localData = localStorage.getItem('utenti');
+    const defaultUtenti = Array.isArray(utentiData) ? utentiData : (utentiData.utenti || []);
+    return localData ? JSON.parse(localData) : defaultUtenti;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('veicoli', JSON.stringify(veicoli));
+  }, [veicoli]);
+
+  useEffect(() => {
+    localStorage.setItem('stazioni', JSON.stringify(stazioni));
+  }, [stazioni]);
+
+  useEffect(() => {
+    localStorage.setItem('utenti', JSON.stringify(utenti));
+  }, [utenti]);
 
   const headersVeicoli = [
     { key: 'id', label: 'ID', width: '60px' },
@@ -32,7 +56,7 @@ const GestioneVeicoliStazioni = () => {
     { key: 'tipo', label: 'Tipo' },
     { key: 'stato', label: 'Stato' },
     { key: 'livello_batteria', label: 'Batteria' },
-    { key: 'azioni', label: 'Azioni', width: '120px' }
+    { key: 'azioni', label: 'Azioni', width: '180px' }
   ];
 
   const headersStazioni = [
@@ -41,7 +65,7 @@ const GestioneVeicoliStazioni = () => {
     { key: 'indirizzo', label: 'Indirizzo' },
     { key: 'tipo', label: 'Tipo' },
     { key: 'capacita', label: 'Capacità' },
-    { key: 'azioni', label: 'Azioni', width: '120px' }
+    { key: 'azioni', label: 'Azioni', width: '180px' }
   ];
 
   const headersUtenti = [
@@ -50,7 +74,7 @@ const GestioneVeicoliStazioni = () => {
     { key: 'cognome', label: 'Cognome' },
     { key: 'email', label: 'Email' },
     { key: 'role', label: 'Ruolo' },
-    { key: 'azioni', label: 'Azioni', width: '120px' }
+    { key: 'azioni', label: 'Azioni', width: '180px' }
   ];
 
   const addVehicleSteps = [
@@ -127,28 +151,47 @@ const GestioneVeicoliStazioni = () => {
   const handleCloseAddUserModal = () => setIsAddUserModalOpen(false);
 
   const handleAddVehicleComplete = (formData) => {
-    console.log("Nuovo Veicolo Aggiunto:", formData);
-    alert("Veicolo aggiunto con successo!");
+    setVeicoli((prev) => {
+      const nextId = prev.length > 0 ? Math.max(...prev.map(v => Number(v.id) || 0)) + 1 : 1;
+      return [...prev, { id: nextId, stato: "Disponibile", ...formData }];
+    });
     setIsAddVehicleModalOpen(false);
   };
 
   const handleAddStationComplete = (formData) => {
-    console.log("Nuova Stazione Aggiunta:", formData);
-    alert("Stazione aggiunta con successo!");
+    setStazioni((prev) => {
+      const nextId = prev.length > 0 ? Math.max(...prev.map(s => Number(s.id) || 0)) + 1 : 1;
+      return [...prev, { id: nextId, ...formData }];
+    });
     setIsAddStationModalOpen(false);
   };
 
   const handleAddUserComplete = (formData) => {
-    console.log("Nuovo Utente Aggiunto:", formData);
-    alert("Utente creato con successo!");
+    setUtenti((prev) => {
+      const nextId = prev.length > 0 ? Math.max(...prev.map(u => Number(u.id) || 0)) + 1 : 1;
+      return [...prev, { id: nextId, attivo: true, ...formData }];
+    });
     setIsAddUserModalOpen(false);
+  };
+
+  const handleDeleteItem = (id) => {
+    const conferma = window.confirm(`Sei sicuro di voler eliminare l'elemento con ID ${id}?`);
+    if (!conferma) return;
+
+    if (activeTab === 'veicoli') {
+      setVeicoli(prev => prev.filter(item => item.id !== id));
+    } else if (activeTab === 'stazioni') {
+      setStazioni(prev => prev.filter(item => item.id !== id));
+    } else if (activeTab === 'utenti') {
+      setUtenti(prev => prev.filter(item => item.id !== id));
+    }
   };
 
   const getRawData = () => {
     switch (activeTab) {
-      case 'veicoli': return dataVeicoli;
-      case 'stazioni': return dataStazioni;
-      case 'utenti': return isAdmin ? dataUtenti : [];
+      case 'veicoli': return veicoli;
+      case 'stazioni': return stazioni;
+      case 'utenti': return isAdmin ? utenti : [];
       default: return [];
     }
   };
@@ -181,15 +224,26 @@ const GestioneVeicoliStazioni = () => {
     ...item,
     livello_batteria: item.livello_batteria !== null && item.livello_batteria !== undefined ? `${item.livello_batteria}%` : 'N/D',
     azioni: (
-      <button 
-        className='btn-edit' 
-        onClick={(e) => {
-          e.stopPropagation();
-          console.log("Modifica elemento:", item.id);
-        }}
-      >
-        Modifica
-      </button>
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <button 
+          className='btn-edit' 
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log("Modifica elemento:", item.id);
+          }}
+        >
+          Modifica
+        </button>
+        <button 
+          className='btn-delete' 
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDeleteItem(item.id);
+          }}
+        >
+          Elimina
+        </button>
+      </div>
     )
   }));
 
