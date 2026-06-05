@@ -63,9 +63,7 @@ const GestioneVeicoliStazioni = () => {
       fields: [
         { name: "targa_codice", label: "Targa / Codice", placeholder: "es. AA123BB o EV-01" },
         { name: "tipo", label: "Tipo Veicolo", type: "select", options: [
-          { label: "Auto Elettrica", value: "auto_elettrica" },
-          { label: "Furgone Elettrico", value: "furgone_elettrico" },
-          { label: "Scooter Elettrico", value: "scooter_elettrico" },
+          { label: "Automobile Elettrica", value: "automobile_elettrica" },
           { label: "Bicicletta", value: "bicicletta" }
         ]},
         { name: "modello", label: "Modello", placeholder: "es. Tesla Model 3" },
@@ -121,9 +119,7 @@ const GestioneVeicoliStazioni = () => {
           fields: [
             { name: "targa_codice", label: "Targa / Codice" },
             { name: "tipo", label: "Tipo Veicolo", type: "select", options: [
-              { label: "Auto Elettrica", value: "auto_elettrica" },
-              { label: "Furgone Elettrico", value: "furgone_elettrico" },
-              { label: "Scooter Elettrico", value: "scooter_elettrico" },
+              { label: "Automobile Elettrica", value: "automobile_elettrica" },
               { label: "Bicicletta", value: "bicicletta" }
             ]},
             { name: "modello", label: "Modello" },
@@ -415,7 +411,7 @@ const GestioneVeicoliStazioni = () => {
                 <>
                   <p><strong>ID:</strong> {selectedItem.id}</p>
                   <p><strong>Targa / Codice:</strong> {selectedItem.targa_codice}</p>
-                  <p><strong>Tipo:</strong> {selectedItem.tipo}</p>
+                  <p><strong>Tipo:</strong> {selectedItem.tipo === 'automobile_elettrica' ? 'Automobile Elettrica' : selectedItem.tipo}</p>
                   <p><strong>Stato:</strong> {selectedItem.stato}</p>
                   <p><strong>Livello Batteria:</strong> {selectedItem.livello_batteria}</p>
                   <p><strong>KM Totali:</strong> {selectedItem.km_totali}</p>
