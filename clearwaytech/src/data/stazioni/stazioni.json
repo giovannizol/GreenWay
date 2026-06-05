@@ -1,0 +1,31 @@
+{
+  "stazioni": [
+    {
+      "id": 1,
+      "nome": "Stazione Centrale Hub",
+      "indirizzo": "Piazza Duca d'Aosta, 1, Milano",
+      "lat": 45.48580000,
+      "long": 9.20340000,
+      "tipo": "misto",
+      "capacita": 15
+    },
+    {
+      "id": 2,
+      "nome": "Posteggio Bici Garibaldi",
+      "indirizzo": "Piazza Sigmund Freud, Milano",
+      "lat": 45.48310000,
+      "long": 9.18780000,
+      "tipo": "bici",
+      "capacita": 20
+    },
+    {
+      "id": 3,
+      "nome": "EnelX Charging Cadorna",
+      "indirizzo": "Piazzale Luigi Cadorna, Milano",
+      "lat": 45.46830000,
+      "long": 9.17490000,
+      "tipo": "auto",
+      "capacita": 6
+    }
+  ]
+}

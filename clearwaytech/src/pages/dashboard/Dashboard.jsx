@@ -2,7 +2,6 @@ import './Dashboard.css'
 import { useAuth } from '../../context/useAuth'
 import { StatCard } from '../../components/StatCard/StatCard'
 import { MapSection } from '../../components/MapSection/MapSection'
-import { NotificationPanel } from '../../components/NotificationPanel/NotificationPanel'
 import { VehicleChart } from '../../components/VehicleChart/VehicleChart'
 import { AssistanceChart } from '../../components/AssistanceChart/AssistanceChart'
 
@@ -36,30 +35,22 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-layout">
-      {/* Colonna Sinistra: Stats, Grafici, Mappa */}
-      <div className="dashboard-main-area">
-        <div className="stats-grid">
-          {stats.map((stat, index) => (
-            <StatCard key={index} {...stat} />
-          ))}
-        </div>
-
-        {!isCompactView && (
-          <div className="charts-grid">
-            <VehicleChart />
-            <AssistanceChart />
-          </div>
-        )}
-
-        <div className={`map-section-container${isTecnico ? ' tecnico' : isSupporto ? ' supporto' : ''}`}>
-          <MapSection />
-        </div>
+      <div className="stats-grid">
+        {stats.map((stat, index) => (
+          <StatCard key={index} {...stat} />
+        ))}
       </div>
 
-      {/* Colonna Destra: Notifiche (Spanna tutta l'altezza) */}
-      <aside className="dashboard-sidebar-area">
-        <NotificationPanel />
-      </aside>
+      {!isCompactView && (
+        <div className="charts-grid">
+          <VehicleChart />
+          <AssistanceChart />
+        </div>
+      )}
+
+      <div className={`map-section-container${isTecnico ? ' tecnico' : isSupporto ? ' supporto' : ''}`}>
+        <MapSection />
+      </div>
     </div>
   )
 }

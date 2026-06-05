@@ -5,7 +5,7 @@
     "role": "admin",
     "nome": "Alessandro",
     "cognome": "Rossi",
-    "password": "12!",
+    "password": "admin",
     "attivo": true
   },
   {
@@ -14,7 +14,7 @@
     "role": "supporto",
     "nome": "Elena",
     "cognome": "Bianchi",
-    "password": "SupportoBianchi20!*",
+    "password": "supporto",
     "attivo": true
   },
   {
@@ -23,7 +23,7 @@
     "role": "tecnico",
     "nome": "Marco",
     "cognome": "Verdi",
-    "password": "TecnicoVerdi10!",
+    "password": "tecnico",
     "attivo": true
   }
 ]
