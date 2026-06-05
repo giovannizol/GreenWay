@@ -23,12 +23,23 @@ const GestioneVeicoliStazioni = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // INIZIALIZZAZIONE STATO SOLO CON I DATI JSON LOCALI (SENZA LOCALSTORAGE)
   const [veicoli, setVeicoli] = useState(veicoliData.veicoli || []);
   const [stazioni, setStazioni] = useState(stazioniData.stazioni || []);
   const [utenti, setUtenti] = useState(() => {
     return Array.isArray(utentiData) ? utentiData : (utentiData.utenti || []);
   });
+
+  const formatTipoVeicolo = (tipo) => {
+    if (!tipo) return '';
+    const normalized = tipo.toString().toLowerCase().trim();
+    if (['auto', 'auto_elettrica', 'auto elettrica', 'automobile_elettrica', 'automobile elettrica'].includes(normalized)) {
+      return 'Automobile Elettrica';
+    }
+    if (['bici', 'bicicletta'].includes(normalized)) {
+      return 'Bicicletta';
+    }
+    return tipo;
+  };
 
   const headersVeicoli = [
     { key: 'id', label: 'ID', width: '60px' },
@@ -63,7 +74,7 @@ const GestioneVeicoliStazioni = () => {
       fields: [
         { name: "targa_codice", label: "Targa / Codice", placeholder: "es. AA123BB o EV-01" },
         { name: "tipo", label: "Tipo Veicolo", type: "select", options: [
-          { label: "Automobile Elettrica", value: "automobile_elettrica" },
+          { label: "Automobile Elettrica", value: "automobile elettrica" },
           { label: "Bicicletta", value: "bicicletta" }
         ]},
         { name: "modello", label: "Modello", placeholder: "es. Tesla Model 3" },
@@ -119,15 +130,15 @@ const GestioneVeicoliStazioni = () => {
           fields: [
             { name: "targa_codice", label: "Targa / Codice" },
             { name: "tipo", label: "Tipo Veicolo", type: "select", options: [
-              { label: "Automobile Elettrica", value: "automobile_elettrica" },
+              { label: "Automobile Elettrica", value: "automobile elettrica" },
               { label: "Bicicletta", value: "bicicletta" }
             ]},
             { name: "modello", label: "Modello" },
             { name: "stato", label: "Stato", type: "select", options: [
-              { label: "Disponibile", value: "Disponibile" },
-              { label: "In Uso", value: "In Uso" },
-              { label: "In Ricarica", value: "In Ricarica" },
-              { label: "Manutenzione", value: "Manutenzione" }
+              { label: "Disponibile", value: "disponibile" },
+              { label: "In Uso", value: "in_uso" },
+              { label: "In Ricarica", value: "caricando" },
+              { label: "Guasto/Manutenzione", value: "guasto" }
             ]},
             { name: "livello_batteria", label: "Livello Batteria (%)", type: "number" },
             { name: "km_totali", label: "KM Totali", type: "number" },
@@ -204,7 +215,7 @@ const GestioneVeicoliStazioni = () => {
   const handleAddVehicleComplete = (formData) => {
     setVeicoli((prev) => {
       const nextId = prev.length > 0 ? Math.max(...prev.map(v => Number(v.id) || 0)) + 1 : 1;
-      return [...prev, { id: nextId, stato: "Disponibile", ...formData }];
+      return [...prev, { id: nextId, stato: "disponibile", ...formData }];
     });
     setIsAddVehicleModalOpen(false);
   };
@@ -275,9 +286,10 @@ const GestioneVeicoliStazioni = () => {
   const filteredData = getRawData().filter(item => {
     const query = searchQuery.toLowerCase();
     if (activeTab === 'veicoli') {
+      const formattedTipo = formatTipoVeicolo(item.tipo).toLowerCase();
       return (
         item.targa_codice?.toLowerCase().includes(query) ||
-        item.tipo?.toLowerCase().includes(query) ||
+        formattedTipo.includes(query) ||
         item.stato?.toLowerCase().includes(query)
       );
     } else if (activeTab === 'stazioni') {
@@ -298,6 +310,7 @@ const GestioneVeicoliStazioni = () => {
 
   const tableData = filteredData.map(item => ({
     ...item,
+    tipo: activeTab === 'veicoli' ? formatTipoVeicolo(item.tipo) : item.tipo,
     livello_batteria: item.livello_batteria !== null && item.livello_batteria !== undefined ? `${item.livello_batteria}%` : 'N/D',
     azioni: (
       <div style={{ display: 'flex', gap: '8px' }}>
@@ -305,7 +318,19 @@ const GestioneVeicoliStazioni = () => {
           className='btn-edit' 
           onClick={(e) => {
             e.stopPropagation();
-            setSelectedItem(item);
+            
+            const itemToEdit = { ...item };
+            
+            if (activeTab === 'veicoli' && itemToEdit.tipo) {
+              const tipoNormalizzato = itemToEdit.tipo.toString().toLowerCase().trim();
+              if (['auto', 'auto_elettrica', 'auto elettrica', 'automobile_elettrica', 'automobile elettrica'].includes(tipoNormalizzato)) {
+                itemToEdit.tipo = 'automobile elettrica';
+              } else if (['bici', 'bicicletta'].includes(tipoNormalizzato)) {
+                itemToEdit.tipo = 'bicicletta';
+              }
+            }
+
+            setSelectedItem(itemToEdit);
             setIsEditModalOpen(true);
           }}
         >
@@ -398,7 +423,6 @@ const GestioneVeicoliStazioni = () => {
         )}
       </div>
 
-      {/* MODAL DETTAGLIO */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div style={{ padding: '20px' }}>
           <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
@@ -411,7 +435,7 @@ const GestioneVeicoliStazioni = () => {
                 <>
                   <p><strong>ID:</strong> {selectedItem.id}</p>
                   <p><strong>Targa / Codice:</strong> {selectedItem.targa_codice}</p>
-                  <p><strong>Tipo:</strong> {selectedItem.tipo === 'automobile_elettrica' ? 'Automobile Elettrica' : selectedItem.tipo}</p>
+                  <p><strong>Tipo:</strong> {formatTipoVeicolo(selectedItem.tipo)}</p>
                   <p><strong>Stato:</strong> {selectedItem.stato}</p>
                   <p><strong>Livello Batteria:</strong> {selectedItem.livello_batteria}</p>
                   <p><strong>KM Totali:</strong> {selectedItem.km_totali}</p>
@@ -448,7 +472,6 @@ const GestioneVeicoliStazioni = () => {
         </div>
       </Modal>
 
-      {/* MODAL MODIFICA */}
       <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
         <div style={{ padding: '20px' }}>
           <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
@@ -464,7 +487,6 @@ const GestioneVeicoliStazioni = () => {
         </div>
       </Modal>
 
-      {/* MODAL DI AGGIUNTA */}
       <Modal isOpen={isAddVehicleModalOpen} onClose={handleCloseAddVehicleModal}>
         <div style={{ padding: '20px' }}>
           <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>Nuovo Veicolo</h2>
