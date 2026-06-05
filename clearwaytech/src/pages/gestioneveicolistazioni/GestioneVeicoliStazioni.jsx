@@ -35,7 +35,7 @@ const GestioneVeicoliStazioni = () => {
     if (['auto', 'auto_elettrica', 'auto elettrica', 'automobile_elettrica', 'automobile elettrica'].includes(normalized)) {
       return 'Automobile Elettrica';
     }
-    if (['bici', 'bicicletta'].includes(normalized)) {
+    if (['bici', 'bicicletta', 'bicicletta elettrica'].includes(normalized)) {
       return 'Bicicletta';
     }
     return tipo;
@@ -45,6 +45,7 @@ const GestioneVeicoliStazioni = () => {
     { key: 'id', label: 'ID', width: '60px' },
     { key: 'targa_codice', label: 'Targa / Codice' },
     { key: 'tipo', label: 'Tipo' },
+    { key: 'modello', label: 'Modello' },
     { key: 'stato', label: 'Stato' },
     { key: 'livello_batteria', label: 'Batteria' },
     { key: 'azioni', label: 'Azioni', width: '180px' }
@@ -289,6 +290,7 @@ const GestioneVeicoliStazioni = () => {
       const formattedTipo = formatTipoVeicolo(item.tipo).toLowerCase();
       return (
         item.targa_codice?.toLowerCase().includes(query) ||
+        item.modello?.toLowerCase().includes(query) ||
         formattedTipo.includes(query) ||
         item.stato?.toLowerCase().includes(query)
       );
@@ -325,7 +327,7 @@ const GestioneVeicoliStazioni = () => {
               const tipoNormalizzato = itemToEdit.tipo.toString().toLowerCase().trim();
               if (['auto', 'auto_elettrica', 'auto elettrica', 'automobile_elettrica', 'automobile elettrica'].includes(tipoNormalizzato)) {
                 itemToEdit.tipo = 'automobile elettrica';
-              } else if (['bici', 'bicicletta'].includes(tipoNormalizzato)) {
+              } else if (['bici', 'bicicletta', 'bicicletta elettrica'].includes(tipoNormalizzato)) {
                 itemToEdit.tipo = 'bicicletta';
               }
             }
@@ -379,7 +381,7 @@ const GestioneVeicoliStazioni = () => {
         <input 
           type='text' 
           placeholder={`Cerca ${
-            activeTab === 'veicoli' ? 'veicolo (targa, tipo, stato)...' : 
+            activeTab === 'veicoli' ? 'veicolo (targa, tipo, modello, stato)...' : 
             activeTab === 'stazioni' ? 'stazione (nome, indirizzo, tipo)...' : 'utente (nome, email, ruolo)...'
           }`}
           className='search-input'
@@ -436,6 +438,7 @@ const GestioneVeicoliStazioni = () => {
                   <p><strong>ID:</strong> {selectedItem.id}</p>
                   <p><strong>Targa / Codice:</strong> {selectedItem.targa_codice}</p>
                   <p><strong>Tipo:</strong> {formatTipoVeicolo(selectedItem.tipo)}</p>
+                  <p><strong>Modello:</strong> {selectedItem.modello}</p>
                   <p><strong>Stato:</strong> {selectedItem.stato}</p>
                   <p><strong>Livello Batteria:</strong> {selectedItem.livello_batteria}</p>
                   <p><strong>KM Totali:</strong> {selectedItem.km_totali}</p>
