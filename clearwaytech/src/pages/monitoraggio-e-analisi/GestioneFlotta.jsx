@@ -16,7 +16,7 @@ export default function GestioneFlotta() {
     <div className="flotta-container">
       {/* HEADER INTERNO */}
       <div className="flotta-header">
-        <h1>Gestione Flotta e Stazioni</h1>
+        <h1>Monitoraggio e Analisi</h1>
       </div>
 
       {/* SOTTO-TAB (Stile Manutenzione) */}
@@ -52,6 +52,21 @@ export default function GestioneFlotta() {
                 <span className="kpi-number">142</span>
                 <span className="kpi-trend positivo">+5% rispetto a ieri</span>
               </div>
+              <div className="kpi-chart">
+                <svg viewBox="0 0 36 36" className="circular-chart green">
+                  <path className="circle-bg"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path className="circle"
+                    strokeDasharray="75, 100"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+              </div>
             </div>
 
             <div className="kpi-card">
@@ -60,6 +75,21 @@ export default function GestioneFlotta() {
                 <span className="kpi-number">12</span>
                 <span className="kpi-trend positivo">85% occupati</span>
               </div>
+              <div className="kpi-chart">
+                <svg viewBox="0 0 36 36" className="circular-chart blue">
+                  <path className="circle-bg"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path className="circle"
+                    strokeDasharray="85, 100"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+              </div>
             </div>
 
             <div className="kpi-card">
@@ -67,6 +97,21 @@ export default function GestioneFlotta() {
                 <h3>In Manutenzione</h3>
                 <span className="kpi-number">8</span>
                 <span className="kpi-trend negativo">+2 veicoli ore fa</span>
+              </div>
+              <div className="kpi-chart">
+                <svg viewBox="0 0 36 36" className="circular-chart orange">
+                  <path className="circle-bg"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path className="circle"
+                    strokeDasharray="15, 100"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
               </div>
             </div>
           </div>
