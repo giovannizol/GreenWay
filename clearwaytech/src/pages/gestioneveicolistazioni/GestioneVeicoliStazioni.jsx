@@ -353,6 +353,11 @@ const GestioneVeicoliStazioni = () => {
 
   return (
     <div className='gestione-page'>
+      <div className="page-header">
+        <h1>Gestione</h1>
+        <p>Da qui puoi aggiungere, modificare e rimuovere veicoli, stazioni e utenti.</p>
+      </div>
+
       <div className='buttons-container'>
         <button 
           className={`btn-action ${activeTab === 'veicoli' ? 'active' : ''}`}
