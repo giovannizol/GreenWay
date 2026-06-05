@@ -91,16 +91,3 @@
   display: flex;
   justify-content: space-between;
 }
-
-/* Subtle background accent */
-.stat-card::after {
-  content: '';
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 80px;
-  height: 80px;
-  background-color: var(--color-primary);
-  opacity: 0.03;
-  border-radius: 50%;
-}
