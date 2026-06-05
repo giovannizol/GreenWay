@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Table from '../../components/Table/Table';
 import Modal from '../../components/Modal/Modal';
 import MultiStepForm from '../../components/Form/MultiStepForm';
@@ -16,39 +16,19 @@ const GestioneVeicoliStazioni = () => {
 
   const [activeTab, setActiveTab] = useState('veicoli');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); 
   const [isAddVehicleModalOpen, setIsAddVehicleModalOpen] = useState(false);
   const [isAddStationModalOpen, setIsAddStationModalOpen] = useState(false);
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [veicoli, setVeicoli] = useState(() => {
-    const localData = localStorage.getItem('veicoli');
-    return localData ? JSON.parse(localData) : (veicoliData.veicoli || []);
-  });
-
-  const [stazioni, setStazioni] = useState(() => {
-    const localData = localStorage.getItem('stazioni');
-    return localData ? JSON.parse(localData) : (stazioniData.stazioni || []);
-  });
-
+  // INIZIALIZZAZIONE STATO SOLO CON I DATI JSON LOCALI (SENZA LOCALSTORAGE)
+  const [veicoli, setVeicoli] = useState(veicoliData.veicoli || []);
+  const [stazioni, setStazioni] = useState(stazioniData.stazioni || []);
   const [utenti, setUtenti] = useState(() => {
-    const localData = localStorage.getItem('utenti');
-    const defaultUtenti = Array.isArray(utentiData) ? utentiData : (utentiData.utenti || []);
-    return localData ? JSON.parse(localData) : defaultUtenti;
+    return Array.isArray(utentiData) ? utentiData : (utentiData.utenti || []);
   });
-
-  useEffect(() => {
-    localStorage.setItem('veicoli', JSON.stringify(veicoli));
-  }, [veicoli]);
-
-  useEffect(() => {
-    localStorage.setItem('stazioni', JSON.stringify(stazioni));
-  }, [stazioni]);
-
-  useEffect(() => {
-    localStorage.setItem('utenti', JSON.stringify(utenti));
-  }, [utenti]);
 
   const headersVeicoli = [
     { key: 'id', label: 'ID', width: '60px' },
@@ -131,6 +111,76 @@ const GestioneVeicoliStazioni = () => {
     }
   ];
 
+  const getEditSteps = () => {
+    if (!selectedItem) return [];
+    
+    if (activeTab === 'veicoli') {
+      return [
+        {
+          title: "Dati Veicolo",
+          fields: [
+            { name: "targa_codice", label: "Targa / Codice" },
+            { name: "tipo", label: "Tipo Veicolo", type: "select", options: [
+              { label: "Auto Elettrica", value: "auto_elettrica" },
+              { label: "Furgone Elettrico", value: "furgone_elettrico" },
+              { label: "Scooter Elettrico", value: "scooter_elettrico" },
+              { label: "Bicicletta", value: "bicicletta" }
+            ]},
+            { name: "modello", label: "Modello" },
+            { name: "stato", label: "Stato", type: "select", options: [
+              { label: "Disponibile", value: "Disponibile" },
+              { label: "In Uso", value: "In Uso" },
+              { label: "In Ricarica", value: "In Ricarica" },
+              { label: "Manutenzione", value: "Manutenzione" }
+            ]},
+            { name: "livello_batteria", label: "Livello Batteria (%)", type: "number" },
+            { name: "km_totali", label: "KM Totali", type: "number" },
+            { name: "data_immatricolazione", label: "Data Immatricolazione", type: "date" }
+          ]
+        }
+      ];
+    }
+
+    if (activeTab === 'stazioni') {
+      return [
+        {
+          title: "Dati Stazione",
+          fields: [
+            { name: "nome", label: "Nome Stazione" },
+            { name: "indirizzo", label: "Indirizzo" },
+            { name: "tipo", label: "Tipo", type: "select", options: [
+              { label: "Ricarica Rapida", value: "rapida" },
+              { label: "Ricarica Standard", value: "standard" },
+              { label: "Parcheggio Semplice", value: "parcheggio" }
+            ]},
+            { name: "capacita", label: "Capacità (Posti)", type: "number" },
+            { name: "lat", label: "Latitudine", type: "number" },
+            { name: "long", label: "Longitudine", type: "number" }
+          ]
+        }
+      ];
+    }
+
+    if (activeTab === 'utenti') {
+      return [
+        {
+          title: "Dati Utente",
+          fields: [
+            { name: "nome", label: "Nome" },
+            { name: "cognome", label: "Cognome" },
+            { name: "email", label: "Email", type: "email" },
+            { name: "role", label: "Ruolo", type: "select", options: [
+              { label: "Amministratore", value: "admin" },
+              { label: "Tecnico", value: "tecnico" },
+              { label: "Supporto", value: "supporto" }
+            ]}
+          ]
+        }
+      ];
+    }
+    return [];
+  };
+
   const handleRowClick = (item) => {
     setSelectedItem(item);
     setIsModalOpen(true);
@@ -138,6 +188,11 @@ const GestioneVeicoliStazioni = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setSelectedItem(null);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
     setSelectedItem(null);
   };
 
@@ -172,6 +227,31 @@ const GestioneVeicoliStazioni = () => {
       return [...prev, { id: nextId, attivo: true, ...formData }];
     });
     setIsAddUserModalOpen(false);
+  };
+
+  const handleEditComplete = (formData) => {
+    const updatedItem = {
+      ...selectedItem,
+      ...formData,
+      id: selectedItem.id 
+    };
+
+    if (updatedItem.livello_batteria !== undefined) updatedItem.livello_batteria = Number(updatedItem.livello_batteria);
+    if (updatedItem.km_totali !== undefined) updatedItem.km_totali = Number(updatedItem.km_totali);
+    if (updatedItem.capacita !== undefined) updatedItem.capacita = Number(updatedItem.capacita);
+    if (updatedItem.lat !== undefined) updatedItem.lat = Number(updatedItem.lat);
+    if (updatedItem.long !== undefined) updatedItem.long = Number(updatedItem.long);
+
+    if (activeTab === 'veicoli') {
+      setVeicoli(prev => prev.map(item => item.id === selectedItem.id ? updatedItem : item));
+    } else if (activeTab === 'stazioni') {
+      setStazioni(prev => prev.map(item => item.id === selectedItem.id ? updatedItem : item));
+    } else if (activeTab === 'utenti') {
+      setUtenti(prev => prev.map(item => item.id === selectedItem.id ? updatedItem : item));
+    }
+
+    setIsEditModalOpen(false);
+    setSelectedItem(null);
   };
 
   const handleDeleteItem = (id) => {
@@ -229,7 +309,8 @@ const GestioneVeicoliStazioni = () => {
           className='btn-edit' 
           onClick={(e) => {
             e.stopPropagation();
-            console.log("Modifica elemento:", item.id);
+            setSelectedItem(item);
+            setIsEditModalOpen(true);
           }}
         >
           Modifica
@@ -321,13 +402,11 @@ const GestioneVeicoliStazioni = () => {
         )}
       </div>
 
+      {/* MODAL DETTAGLIO */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div style={{ padding: '20px' }}>
           <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
-            Dettaglio {
-              activeTab === 'veicoli' ? 'Veicolo' : 
-              activeTab === 'stazioni' ? 'Stazione' : 'Utente'
-            }
+            Dettaglio {activeTab === 'veicoli' ? 'Veicolo' : activeTab === 'stazioni' ? 'Stazione' : 'Utente'}
           </h2>
           
           {selectedItem && (
@@ -338,7 +417,7 @@ const GestioneVeicoliStazioni = () => {
                   <p><strong>Targa / Codice:</strong> {selectedItem.targa_codice}</p>
                   <p><strong>Tipo:</strong> {selectedItem.tipo}</p>
                   <p><strong>Stato:</strong> {selectedItem.stato}</p>
-                  <p><strong>Livello Batteria:</strong> {selectedItem.livello_batteria !== null && selectedItem.livello_batteria !== undefined ? `${selectedItem.livello_batteria}%` : 'N/D'}</p>
+                  <p><strong>Livello Batteria:</strong> {selectedItem.livello_batteria}</p>
                   <p><strong>KM Totali:</strong> {selectedItem.km_totali}</p>
                   <p><strong>Ultima Revisione:</strong> {selectedItem.ultima_revisione || 'N/A'}</p>
                   <p><strong>Data d'Immatricolazione:</strong> {selectedItem.data_immatricolazione}</p>
@@ -367,39 +446,46 @@ const GestioneVeicoliStazioni = () => {
             </div>
           )}
           
-          <button 
-            className='btn-action' 
-            onClick={handleCloseModal} 
-            style={{ marginTop: '25px', width: '100%' }}
-          >
+          <button className='btn-action' onClick={handleCloseModal} style={{ marginTop: '25px', width: '100%' }}>
             Chiudi
           </button>
         </div>
       </Modal>
 
-      <Modal isOpen={isAddVehicleModalOpen} onClose={handleCloseAddVehicleModal}>
+      {/* MODAL MODIFICA */}
+      <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
         <div style={{ padding: '20px' }}>
           <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
-            Nuovo Veicolo
+            Modifica {activeTab === 'veicoli' ? 'Veicolo' : activeTab === 'stazioni' ? 'Stazione' : 'Utente'}
           </h2>
+          {selectedItem && (
+            <MultiStepForm 
+              steps={getEditSteps()} 
+              onComplete={handleEditComplete} 
+              initialData={selectedItem}
+            />
+          )}
+        </div>
+      </Modal>
+
+      {/* MODAL DI AGGIUNTA */}
+      <Modal isOpen={isAddVehicleModalOpen} onClose={handleCloseAddVehicleModal}>
+        <div style={{ padding: '20px' }}>
+          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>Nuovo Veicolo</h2>
           <MultiStepForm steps={addVehicleSteps} onComplete={handleAddVehicleComplete} />
         </div>
       </Modal>
 
       <Modal isOpen={isAddStationModalOpen} onClose={handleCloseAddStationModal}>
         <div style={{ padding: '20px' }}>
-          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
-            Nuova Stazione
-          </h2>
+          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>Nuova Stazione</h2>
           <MultiStepForm steps={addStationSteps} onComplete={handleAddStationComplete} />
         </div>
       </Modal>
 
       <Modal isOpen={isAddUserModalOpen} onClose={handleCloseAddUserModal}>
         <div style={{ padding: '20px' }}>
-          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
-            Nuovo Utente
-          </h2>
+          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>Nuovo Utente</h2>
           <MultiStepForm steps={addUserSteps} onComplete={handleAddUserComplete} />
         </div>
       </Modal>
