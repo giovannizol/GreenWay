@@ -123,6 +123,9 @@ export default function GestioneFlotta() {
         </div>
       )}
 
+
+
+
       {activeTab === 'aggiungi' && (
         <div className="form-wizard-container">
           <form className="wizard-form" onSubmit={(e) => e.preventDefault()}>
