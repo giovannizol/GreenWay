@@ -12,6 +12,7 @@ const Manutenzione = () => {
   const [currentView, setCurrentView] = useState("default");
   const [statusFilter, setStatusFilter] = useState("Programmato");
   const [prefilledData, setPrefilledData] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
 
   // dati fittizi form manutenzione
   const maintenanceSteps = [
@@ -305,6 +306,19 @@ const Manutenzione = () => {
       ? defaultData
       : defaultData.filter((item) => item.stato === statusFilter);
 
+  // Filtro per lo storico basato sulla barra di ricerca
+  const filteredHistoryData = historyData.filter((item) => {
+    const query = searchTerm.toLowerCase();
+    return (
+      item.veicolo?.toLowerCase().includes(query) ||
+      item.data?.toLowerCase().includes(query) ||
+      item.stato?.toLowerCase().includes(query) ||
+      item.tecnico?.toLowerCase().includes(query) ||
+      item.azienda?.toLowerCase().includes(query) ||
+      item.intervento?.toLowerCase().includes(query)
+    );
+  });
+
   // Trova tutti gli interventi per il veicolo selezionato (solo MANUTENZIONI)
   const vehicleHistory = selectedRecord
     ? [...defaultData, ...historyData]
@@ -380,9 +394,21 @@ const Manutenzione = () => {
           )}
         </div>
 
+        {currentView === "history" && (
+          <div className="search-bar-container">
+            <input
+              type="text"
+              placeholder="Cerca nello storico (veicolo, tecnico, azienda, intervento)..."
+              className="search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        )}
+
         <Table
           headers={currentView === "history" ? historyHeaders : defaultHeaders}
-          data={currentView === "history" ? historyData : filteredDefaultData}
+          data={currentView === "history" ? filteredHistoryData : filteredDefaultData}
           onRowClick={handleRowClick}
         />
       </div>
