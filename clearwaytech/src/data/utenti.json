@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "email": "admin@greenway.it",
+    "role": "admin",
+    "nome": "Alessandro",
+    "cognome": "Rossi",
+    "password": "admin",
+    "attivo": true
+  },
+  {
+    "id": 2,
+    "email": "supporto@greenway.it",
+    "role": "supporto",
+    "nome": "Elena",
+    "cognome": "Bianchi",
+    "password": "supporto",
+    "attivo": true
+  },
+  {
+    "id": 3,
+    "email": "tecnico@greenway.it",
+    "role": "tecnico",
+    "nome": "Marco",
+    "cognome": "Verdi",
+    "password": "tecnico",
+    "attivo": true
+  }
+]

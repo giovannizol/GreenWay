@@ -10,7 +10,10 @@ const Table = ({ headers, data, className = "", onRowClick }) => {
         <thead>
           <tr>
             {headers.map((header, index) => (
-              <th key={index}>
+              <th 
+                key={index} 
+                style={header.width ? { width: header.width } : {}}
+              >
                 {typeof header === "string" ? header : header.label}
               </th>
             ))}
@@ -22,7 +25,7 @@ const Table = ({ headers, data, className = "", onRowClick }) => {
               <tr 
                 key={rowIndex} 
                 onClick={() => onRowClick && onRowClick(row)}
-                style={{ cursor: onRowClick ? 'pointer' : 'default' }}
+                style={onRowClick ? { cursor: 'pointer' } : {}}
               >
                 {headers.map((header, colIndex) => {
                   const key = typeof header === "string" ? header : header.key;

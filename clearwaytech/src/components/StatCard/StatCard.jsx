@@ -1,6 +1,5 @@
 "use client"
 
-import React from 'react'
 import "./StatCard.css"
 
 export function StatCard({ title, value, change, changeType, progress, color }) {

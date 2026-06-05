@@ -1,7 +1,41 @@
-import { useState } from "react"
-import { MainLayout } from "./layouts/MainLayout"
-import Dashboard from './pages/dashboard/Dashboard'
-import GestioneVeicoliStazioni from './pages/gestioneveicolistazioni/GestioneVeicoliStazioni'
+import { useState } from 'react'
+import GestioneTicket from './pages/gestioneticket/gestioneTicket'
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { MainLayout } from "./layouts/MainLayout/MainLayout";
+import Manutenzione from "./pages/manutenzione/Manutenzione";
+import { AuthProvider } from "./context/AuthProvider";
+import { useAuth } from "./context/useAuth";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Login from "./pages/login/login";
+import gestioneTicket from './pages/gestioneticket/gestioneTicket';
+function AppContent() {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Login />;
+  }
+
+//  const content = section === 'Gestione Ticket' ? <GestioneTicket /> : <Dashboard />
+
+  return (
+    <Router>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/manutenzione" element={<Manutenzione />} />
+          <Route path="/ticket" element={<GestioneTicket />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </MainLayout>
+    </Router>
+  );
+}
 
 function App() {
   const [activeItem, setActiveItem] = useState("Dashboard")
@@ -18,10 +52,10 @@ function App() {
   }
 
   return (
-    <MainLayout activeItem={activeItem} setActiveItem={setActiveItem}>
-      {renderPage()}
-    </MainLayout>
-  )
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
