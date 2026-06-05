@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Table from '../../components/Table/Table';
 import Modal from '../../components/Modal/Modal';
+import MultiStepForm from '../../components/Form/MultiStepForm';
 import { useAuth } from '../../context/useAuth';
 import './GetioneVeicoliStazioni.css';
 
@@ -9,13 +10,15 @@ import stazioniData from '../../data/stazioni/stazioni.json';
 import utentiData from '../../data/utenti.json';
 
 const GestioneVeicoliStazioni = () => {
-  // 2. Estraiamo il ruolo dell'utente (identico alla logica della Dashboard)
   const { user } = useAuth();
   const role = user?.role?.toString().trim().toLowerCase();
   const isAdmin = role === 'admin';
 
   const [activeTab, setActiveTab] = useState('veicoli');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddVehicleModalOpen, setIsAddVehicleModalOpen] = useState(false);
+  const [isAddStationModalOpen, setIsAddStationModalOpen] = useState(false);
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -24,27 +27,84 @@ const GestioneVeicoliStazioni = () => {
   const dataUtenti = Array.isArray(utentiData) ? utentiData : (utentiData.utenti || []);
 
   const headersVeicoli = [
-    { key: 'id', label: 'ID' },
+    { key: 'id', label: 'ID', width: '60px' },
     { key: 'targa_codice', label: 'Targa / Codice' },
     { key: 'tipo', label: 'Tipo' },
     { key: 'stato', label: 'Stato' },
-    { key: 'livello_batteria', label: 'Batteria' }
+    { key: 'livello_batteria', label: 'Batteria' },
+    { key: 'azioni', label: 'Azioni', width: '120px' }
   ];
 
   const headersStazioni = [
-    { key: 'id', label: 'ID' },
+    { key: 'id', label: 'ID', width: '60px' },
     { key: 'nome', label: 'Nome Stazione' },
     { key: 'indirizzo', label: 'Indirizzo' },
     { key: 'tipo', label: 'Tipo' },
-    { key: 'capacita', label: 'Capacità' }
+    { key: 'capacita', label: 'Capacità' },
+    { key: 'azioni', label: 'Azioni', width: '120px' }
   ];
 
   const headersUtenti = [
-    { key: 'id', label: 'ID' },
+    { key: 'id', label: 'ID', width: '60px' },
     { key: 'nome', label: 'Nome' },
     { key: 'cognome', label: 'Cognome' },
     { key: 'email', label: 'Email' },
-    { key: 'role', label: 'Ruolo' }
+    { key: 'role', label: 'Ruolo' },
+    { key: 'azioni', label: 'Azioni', width: '120px' }
+  ];
+
+  const addVehicleSteps = [
+    {
+      title: "Dati Veicolo",
+      fields: [
+        { name: "targa_codice", label: "Targa / Codice", placeholder: "es. AA123BB o EV-01" },
+        { name: "tipo", label: "Tipo Veicolo", type: "select", options: [
+          { label: "Auto Elettrica", value: "auto_elettrica" },
+          { label: "Furgone Elettrico", value: "furgone_elettrico" },
+          { label: "Scooter Elettrico", value: "scooter_elettrico" },
+          { label: "Bicicletta", value: "bicicletta" }
+        ]},
+        { name: "modello", label: "Modello", placeholder: "es. Tesla Model 3" },
+        { name: "livello_batteria", label: "Livello Batteria (%)", type: "number" },
+        { name: "km_totali", label: "KM Totali", type: "number" },
+        { name: "data_immatricolazione", label: "Data Immatricolazione", type: "date" }
+      ]
+    }
+  ];
+
+  const addStationSteps = [
+    {
+      title: "Dati Stazione",
+      fields: [
+        { name: "nome", label: "Nome Stazione", placeholder: "es. Stazione Centrale" },
+        { name: "indirizzo", label: "Indirizzo", placeholder: "es. Via Roma, 10" },
+        { name: "tipo", label: "Tipo", type: "select", options: [
+          { label: "Ricarica Rapida", value: "rapida" },
+          { label: "Ricarica Standard", value: "standard" },
+          { label: "Parcheggio Semplice", value: "parcheggio" }
+        ]},
+        { name: "capacita", label: "Capacità (Posti)", type: "number" },
+        { name: "lat", label: "Latitudine", type: "number" },
+        { name: "long", label: "Longitudine", type: "number" }
+      ]
+    }
+  ];
+
+  const addUserSteps = [
+    {
+      title: "Dati Utente",
+      fields: [
+        { name: "nome", label: "Nome", placeholder: "es. Mario" },
+        { name: "cognome", label: "Cognome", placeholder: "es. Rossi" },
+        { name: "email", label: "Email", type: "email", placeholder: "mario.rossi@example.com" },
+        { name: "role", label: "Ruolo", type: "select", options: [
+          { label: "Amministratore", value: "admin" },
+          { label: "Tecnico", value: "tecnico" },
+          { label: "Supporto", value: "supporto" }
+        ]},
+        { name: "password", label: "Password Temporanea", type: "password" }
+      ]
+    }
   ];
 
   const handleRowClick = (item) => {
@@ -57,11 +117,38 @@ const GestioneVeicoliStazioni = () => {
     setSelectedItem(null);
   };
 
+  const handleOpenAddVehicleModal = () => setIsAddVehicleModalOpen(true);
+  const handleCloseAddVehicleModal = () => setIsAddVehicleModalOpen(false);
+
+  const handleOpenAddStationModal = () => setIsAddStationModalOpen(true);
+  const handleCloseAddStationModal = () => setIsAddStationModalOpen(false);
+
+  const handleOpenAddUserModal = () => setIsAddUserModalOpen(true);
+  const handleCloseAddUserModal = () => setIsAddUserModalOpen(false);
+
+  const handleAddVehicleComplete = (formData) => {
+    console.log("Nuovo Veicolo Aggiunto:", formData);
+    alert("Veicolo aggiunto con successo!");
+    setIsAddVehicleModalOpen(false);
+  };
+
+  const handleAddStationComplete = (formData) => {
+    console.log("Nuova Stazione Aggiunta:", formData);
+    alert("Stazione aggiunta con successo!");
+    setIsAddStationModalOpen(false);
+  };
+
+  const handleAddUserComplete = (formData) => {
+    console.log("Nuovo Utente Aggiunto:", formData);
+    alert("Utente creato con successo!");
+    setIsAddUserModalOpen(false);
+  };
+
   const getRawData = () => {
     switch (activeTab) {
       case 'veicoli': return dataVeicoli;
       case 'stazioni': return dataStazioni;
-      case 'utenti': return isAdmin ? dataUtenti : []; // Protezione extra sui dati
+      case 'utenti': return isAdmin ? dataUtenti : [];
       default: return [];
     }
   };
@@ -90,6 +177,22 @@ const GestioneVeicoliStazioni = () => {
     }
   });
 
+  const tableData = filteredData.map(item => ({
+    ...item,
+    livello_batteria: item.livello_batteria !== null && item.livello_batteria !== undefined ? `${item.livello_batteria}%` : 'N/D',
+    azioni: (
+      <button 
+        className='btn-edit' 
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("Modifica elemento:", item.id);
+        }}
+      >
+        Modifica
+      </button>
+    )
+  }));
+
   return (
     <div className='gestione-page'>
       <div className='buttons-container'>
@@ -106,7 +209,6 @@ const GestioneVeicoliStazioni = () => {
           Lista Stazioni
         </button>
         
-        {/* 3. Il terzo tasto viene renderizzato solo se l'utente è Admin */}
         {isAdmin && (
           <button 
             className={`btn-action ${activeTab === 'utenti' ? 'active' : ''}`}
@@ -136,12 +238,33 @@ const GestioneVeicoliStazioni = () => {
             activeTab === 'veicoli' ? headersVeicoli : 
             activeTab === 'stazioni' ? headersStazioni : headersUtenti
           } 
-          data={filteredData.map(item => ({
-            ...item,
-            livello_batteria: item.livello_batteria !== null && item.livello_batteria !== undefined ? `${item.livello_batteria}%` : 'N/D'
-          }))} 
+          data={tableData} 
           onRowClick={handleRowClick}
         />
+        
+        {activeTab === 'veicoli' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+            <button className='btn-add-vehicle' onClick={handleOpenAddVehicleModal}>
+              + Aggiungi Veicolo
+            </button>
+          </div>
+        )}
+
+        {activeTab === 'stazioni' && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+            <button className='btn-add-vehicle' onClick={handleOpenAddStationModal}>
+              + Aggiungi Stazione
+            </button>
+          </div>
+        )}
+
+        {activeTab === 'utenti' && isAdmin && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+            <button className='btn-add-vehicle' onClick={handleOpenAddUserModal}>
+              + Aggiungi Utente
+            </button>
+          </div>
+        )}
       </div>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
@@ -197,6 +320,33 @@ const GestioneVeicoliStazioni = () => {
           >
             Chiudi
           </button>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isAddVehicleModalOpen} onClose={handleCloseAddVehicleModal}>
+        <div style={{ padding: '20px' }}>
+          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
+            Nuovo Veicolo
+          </h2>
+          <MultiStepForm steps={addVehicleSteps} onComplete={handleAddVehicleComplete} />
+        </div>
+      </Modal>
+
+      <Modal isOpen={isAddStationModalOpen} onClose={handleCloseAddStationModal}>
+        <div style={{ padding: '20px' }}>
+          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
+            Nuova Stazione
+          </h2>
+          <MultiStepForm steps={addStationSteps} onComplete={handleAddStationComplete} />
+        </div>
+      </Modal>
+
+      <Modal isOpen={isAddUserModalOpen} onClose={handleCloseAddUserModal}>
+        <div style={{ padding: '20px' }}>
+          <h2 style={{ color: 'var(--color-primary)', marginBottom: '20px', textTransform: 'uppercase' }}>
+            Nuovo Utente
+          </h2>
+          <MultiStepForm steps={addUserSteps} onComplete={handleAddUserComplete} />
         </div>
       </Modal>
     </div>
