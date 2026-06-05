@@ -1,40 +1,81 @@
 import { useState } from 'react';
+import { StatCard } from '../../components/StatCard/StatCard';
+import Table from '../../components/Table/Table';
 import './GestioneFlotta.css';
 
 export default function GestioneFlotta() {
   const [activeTab, setActiveTab] = useState('stato'); 
 
   // Dati fittizi per la tabella dei veicoli
-  const veicoli = [
+  const veicoliRaw = [
     { id: 'EV-05', modello: 'EVOS Berlina', batteria: 84, stato: 'Disponibile', hub: 'Stazione Centrale' },
     { id: 'EV-02', modello: 'EVOS Van', batteria: 12, stato: 'In Carica', hub: 'Hub Ovest' },
     { id: 'EV-09', modello: 'EVOS Berlina', batteria: 95, stato: 'In Uso', hub: 'Hub Nord' },
     { id: 'EV-14', modello: 'EVOS City', batteria: 45, stato: 'Manutenzione', hub: 'Officina Centrale' },
   ];
 
+  const headers = [
+    { key: 'id', label: 'ID Veicolo' },
+    { key: 'modello', label: 'Modello' },
+    { key: 'batteriaComp', label: 'Livello Batteria' },
+    { key: 'statoComp', label: 'Stato attuale' },
+    { key: 'hub', label: 'Hub / Posizione' },
+    { key: 'azioni', label: 'Azioni' },
+  ];
+
+  const veicoli = veicoliRaw.map(v => ({
+    ...v,
+    batteriaComp: (
+      <div className="battery-container">
+        <span className="battery-text">{v.batteria}%</span>
+        <div className="battery-bar-bg">
+          <div 
+            className={`battery-bar-fill ${v.batteria < 20 ? 'low' : ''}`} 
+            style={{ width: `${v.batteria}%` }}
+          ></div>
+        </div>
+      </div>
+    ),
+    statoComp: (
+      <span className={`status-badge ${v.stato.toLowerCase().replace(' ', '-')}`}>
+        {v.stato}
+      </span>
+    ),
+    azioni: (
+      <button className="action-btn-small">Gestisci</button>
+    )
+  }));
+
+  const stats = [
+    { title: 'Veicoli Totali', value: '142', change: '+5%', changeType: 'positive', progress: 75, color: '#14b8a6' },
+    { title: 'Hub Ricarica', value: '12', change: '85% occ.', changeType: 'positive', progress: 85, color: '#3b82f6' },
+    { title: 'In Manutenzione', value: '8', change: '+2 oggi', changeType: 'negative', progress: 15, color: '#f97316' },
+  ];
+
   return (
-    <div className="flotta-container">
+    <div className="gestione-page flotta-page">
       {/* HEADER INTERNO */}
-      <div className="flotta-header">
+      <div className="page-header">
         <h1>Monitoraggio e Analisi</h1>
+        <p>Analisi delle performance della flotta e stato dei veicoli in tempo reale.</p>
       </div>
 
       {/* SOTTO-TAB (Stile Manutenzione) */}
-      <div className="flotta-tabs">
+      <div className="buttons-container">
         <button 
-          className={`tab-btn ${activeTab === 'stato' ? 'active' : ''}`}
+          className={`btn-action ${activeTab === 'stato' ? 'active' : ''}`}
           onClick={() => setActiveTab('stato')}
         >
           Stato Veicoli
         </button>
         <button 
-          className={`tab-btn ${activeTab === 'mappa' ? 'active' : ''}`}
+          className={`btn-action ${activeTab === 'mappa' ? 'active' : ''}`}
           onClick={() => setActiveTab('mappa')}
         >
           Mappa Stazioni / Hub
         </button>
         <button 
-          className={`tab-btn ${activeTab === 'aggiungi' ? 'active' : ''}`}
+          className={`btn-action ${activeTab === 'aggiungi' ? 'active' : ''}`}
           onClick={() => setActiveTab('aggiungi')}
         >
           Aggiungi Nuovo Veicolo
@@ -45,119 +86,15 @@ export default function GestioneFlotta() {
       {activeTab === 'stato' && (
         <div className="flotta-content">
           
-          <div className="kpi-grid">
-            <div className="kpi-card">
-              <div className="kpi-info">
-                <h3>Veicoli Totali</h3>
-                <span className="kpi-number">142</span>
-                <span className="kpi-trend positivo">+5% rispetto a ieri</span>
-              </div>
-              <div className="kpi-chart">
-                <svg viewBox="0 0 36 36" className="circular-chart green">
-                  <path className="circle-bg"
-                    d="M18 2.0845
-                      a 15.9155 15.9155 0 0 1 0 31.831
-                      a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path className="circle"
-                    strokeDasharray="75, 100"
-                    d="M18 2.0845
-                      a 15.9155 15.9155 0 0 1 0 31.831
-                      a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            <div className="kpi-card">
-              <div className="kpi-info">
-                <h3>Hub Ricarica</h3>
-                <span className="kpi-number">12</span>
-                <span className="kpi-trend positivo">85% occupati</span>
-              </div>
-              <div className="kpi-chart">
-                <svg viewBox="0 0 36 36" className="circular-chart blue">
-                  <path className="circle-bg"
-                    d="M18 2.0845
-                      a 15.9155 15.9155 0 0 1 0 31.831
-                      a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path className="circle"
-                    strokeDasharray="85, 100"
-                    d="M18 2.0845
-                      a 15.9155 15.9155 0 0 1 0 31.831
-                      a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            <div className="kpi-card">
-              <div className="kpi-info">
-                <h3>In Manutenzione</h3>
-                <span className="kpi-number">8</span>
-                <span className="kpi-trend negativo">+2 veicoli ore fa</span>
-              </div>
-              <div className="kpi-chart">
-                <svg viewBox="0 0 36 36" className="circular-chart orange">
-                  <path className="circle-bg"
-                    d="M18 2.0845
-                      a 15.9155 15.9155 0 0 1 0 31.831
-                      a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path className="circle"
-                    strokeDasharray="15, 100"
-                    d="M18 2.0845
-                      a 15.9155 15.9155 0 0 1 0 31.831
-                      a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                </svg>
-              </div>
-            </div>
+          <div className="stats-grid">
+            {stats.map((stat, idx) => (
+              <StatCard key={idx} {...stat} />
+            ))}
           </div>
 
-          <div className="table-wrapper">
-            <h3>Anagrafica e Stato Flotta</h3>
-            <table className="flotta-table">
-              <thead>
-                <tr>
-                  <th>ID Veicolo</th>
-                  <th>Modello</th>
-                  <th>Livello Batteria</th>
-                  <th>Stato attuale</th>
-                  <th>Hub / Posizione</th>
-                  <th>Azioni</th>
-                </tr>
-              </thead>
-              <tbody>
-                {veicoli.map((veicolo) => (
-                  <tr key={veicolo.id}>
-                    <td><strong>{veicolo.id}</strong></td>
-                    <td>{veicolo.modello}</td>
-                    <td>
-                      <div className="battery-container">
-                        <span className="battery-text">{veicolo.batteria}%</span>
-                        <div className="battery-bar-bg">
-                          <div 
-                            className={`battery-bar-fill ${veicolo.batteria < 20 ? 'low' : ''}`} 
-                            style={{ width: `${veicolo.batteria}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className={`status-badge ${veicolo.stato.toLowerCase().replace(' ', '-')}`}>
-                        {veicolo.stato}
-                      </span>
-                    </td>
-                    <td>{veicolo.hub}</td>
-                    <td>
-                      <button className="action-btn">Gestisci</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="table-section">
+            <h3 className="section-title">Anagrafica e Stato Flotta</h3>
+            <Table headers={headers} data={veicoli} />
           </div>
         </div>
       )}
@@ -167,9 +104,6 @@ export default function GestioneFlotta() {
           <p>Mappa interattiva delle stazioni (In fase di implementazione...)</p>
         </div>
       )}
-
-
-
 
       {activeTab === 'aggiungi' && (
         <div className="form-wizard-container">
