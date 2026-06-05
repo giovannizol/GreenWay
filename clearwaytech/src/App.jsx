@@ -38,6 +38,19 @@ function AppContent() {
 }
 
 function App() {
+  const [activeItem, setActiveItem] = useState("Dashboard")
+
+  const renderPage = () => {
+    switch (activeItem) {
+      case "Dashboard":
+        return <Dashboard />
+      case "Gestione Flotta e Stazioni":
+        return <GestioneVeicoliStazioni />
+      default:
+        return <Dashboard />
+    }
+  }
+
   return (
     <AuthProvider>
       <AppContent />
