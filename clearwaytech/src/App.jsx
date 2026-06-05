@@ -1,21 +1,32 @@
-import { AuthProvider } from './context/AuthProvider'
-import { useAuth } from './context/useAuth'
-import { MainLayout } from './layouts/MainLayout'
-import Dashboard from './pages/dashboard/Dashboard'
-import Login from './pages/login/login'
+import { AuthProvider } from './context/AuthProvider';
+import { useAuth } from './context/useAuth';
+import { MainLayout } from './layouts/MainLayout/MainLayout';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/dashboard/Dashboard';
+import Login from './pages/login/login';
+import GestioneFlotta from './pages/monitoraggio-e-analisi/GestioneFlotta';
 
 function AppContent() {
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   if (!user) {
-    return <Login />
+    return <Login />;
   }
 
   return (
-    <MainLayout>
-      <Dashboard />
-    </MainLayout>
-  )
+    <Router>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Rotta per gestire il click sulla voce 'Monitoraggio e Analisi' della sidebar */}
+          <Route path="/monitoraggio" element={<GestioneFlotta />} />
+          {/* Rotta per gestire il click sulla voce 'Gestione Flotta e Stazioni' */}
+          <Route path="/gestione-flotta" element={<GestioneFlotta />} />
+        </Routes>
+      </MainLayout>
+    </Router>
+  );
 }
 
 function App() {
@@ -23,7 +34,7 @@ function App() {
     <AuthProvider>
       <AppContent />
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

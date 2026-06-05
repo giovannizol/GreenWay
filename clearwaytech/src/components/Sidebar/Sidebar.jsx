@@ -1,19 +1,17 @@
-import { useState } from "react"
-import "./Sidebar.css"
+import { NavLink } from "react-router-dom";
+import "./Sidebar.css";
 
 const menuItems = [
-  "Dashboard",
-  "Monitoraggio e Analisi",
-  "Manutenzioni",
-  "Gestione Flotta e Stazioni",
-  "Amministrazione",
-  "Calendario",
-  "Gestione Ticket",
-]
+  { name: "Dashboard", path: "/" },
+  { name: "Monitoraggio e Analisi", path: "/monitoraggio" },
+  { name: "Manutenzioni", path: "/manutenzioni" },
+  { name: "Gestione Flotta e Stazioni", path: "/gestione-flotta" },
+  { name: "Amministrazione", path: "/amministrazione" },
+  { name: "Calendario", path: "/calendario" },
+  { name: "Gestione Ticket", path: "/ticket" },
+];
 
 export function Sidebar() {
-  const [activeItem, setActiveItem] = useState("Dashboard")
-
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
@@ -24,15 +22,16 @@ export function Sidebar() {
       
       <nav className="sidebar-nav">
         {menuItems.map((item) => (
-          <button
-            key={item}
-            onClick={() => setActiveItem(item)}
-            className={`nav-item ${activeItem === item ? "active" : ""}`}
+          <NavLink
+            key={item.name}
+            to={item.path}
+            // La funzione isActive viene chiamata automaticamente da NavLink
+            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
           >
-            {item}
-          </button>
+            {item.name}
+          </NavLink>
         ))}
       </nav>
     </aside>
-  )
+  );
 }
