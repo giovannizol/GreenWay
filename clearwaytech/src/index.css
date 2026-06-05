@@ -7,8 +7,8 @@
 html,
 body,
 #root {
-  min-height: 100%;
-  overflow-x: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -16,7 +16,6 @@ body {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--color-background);
   color: var(--color-text-main);
-  overflow-y: auto;
 }
 
 button,
